@@ -11,7 +11,7 @@
 	<groupId>com.new_era</groupId>
 	<artifactId>alpha</artifactId>
 	<version>0.0.1-SNAPSHOT</version>
-	<packaging>war</packaging>
+	<packaging>jar</packaging>
 	<name>new_era</name>
 	<description>New Era DayZ Server</description>
 	<url/>
