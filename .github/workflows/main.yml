@@ -3,53 +3,84 @@ name: Deploy Website
 on:
   push:
     branches:
-      - main  
+      - main
 
 jobs:
   build-and-deploy:
     runs-on: ubuntu-latest
 
     steps:
-      - name: Checkout Code
+      # 1) Faz checkout do repositório
+      - name: Check out code
         uses: actions/checkout@v3
 
+      # 2) Configura o Java
       - name: Setup Java
         uses: actions/setup-java@v3
         with:
-          distribution: 'temurin'
-          java-version: '23'
+          distribution: temurin
+          # Use uma versão suportada (17 ou 11) ou confirme se 23 funciona
+          java-version: 17
 
+      # 3) Build do backend (Spring Boot)
       - name: Build Backend
         working-directory: ./backend/alpha
         run: |
-          mvn clean install -DskipTests
-          mvn package
+          mvn clean package -DskipTests
 
+      # 4) Instala o sshpass
+      - name: Install sshpass
+        run: |
+          sudo apt-get update && sudo apt-get install -y sshpass
+
+      # 5) Faz Deploy do backend
       - name: Deploy Backend
         env:
           SERVER_USER: ${{ secrets.SERVER_USER }}
           SERVER_IP: ${{ secrets.SERVER_IP }}
           SERVER_PASSWORD: ${{ secrets.SERVER_PASSWORD }}
           SERVER_PATH: ${{ secrets.BACKEND_PATH }}
+        working-directory: ./backend/alpha
         run: |
-          sudo apt-get update && sudo apt-get install -y sshpass
-          sshpass -p "$SERVER_PASSWORD" scp target/*.jar $SERVER_USER@$SERVER_IP:$SERVER_PATH
-          sshpass -p "$SERVER_PASSWORD" ssh $SERVER_USER@$SERVER_IP << EOF
+          # Se quiser identificar melhor o jar, ajuste o nome do .jar aqui
+          # Exemplo: target/minha-app.jar
+          JAR_FILE=$(ls target/*.jar | head -n 1)
+
+          # Copia o jar para o servidor
+          sshpass -p "$SERVER_PASSWORD" scp "$JAR_FILE" "$SERVER_USER"@"$SERVER_IP":"$SERVER_PATH"
+
+          # Acessa o servidor, mata o processo antigo e sobe um novo
+          sshpass -p "$SERVER_PASSWORD" ssh -o StrictHostKeyChecking=no "$SERVER_USER"@"$SERVER_IP" << EOF
+            # Mata o processo antigo, se existir
             pkill -f 'java -jar' || true
-            nohup java -jar $SERVER_PATH/*.jar --server.servlet.context-path=/api > backend.log 2>&1 &
+
+            # Sobe a nova versão em background
+            nohup java -jar "$SERVER_PATH"/$(basename "$JAR_FILE") \
+              --server.servlet.context-path=/api > "$SERVER_PATH"/backend.log 2>&1 &
           EOF
 
+      # 6) Configura o Node.js
+      - name: Setup Node
+        uses: actions/setup-node@v3
+        with:
+          node-version: 18
+
+      # 7) Build do frontend
       - name: Build Frontend
         working-directory: ./frontend/alpha
         run: |
           npm install
           npm run build
 
+      # 8) Deploy do frontend
       - name: Deploy Frontend
         env:
           SERVER_USER: ${{ secrets.SERVER_USER }}
           SERVER_IP: ${{ secrets.SERVER_IP }}
           SERVER_PASSWORD: ${{ secrets.SERVER_PASSWORD }}
           SERVER_PATH: ${{ secrets.FRONTEND_PATH }}
+        working-directory: ./frontend/alpha
         run: |
-          sshpass -p "$SERVER_PASSWORD" rsync -avz --delete ./build/ $SERVER_USER@$SERVER_IP:$SERVER_PATH
+          # Envia o conteúdo da pasta 'build' (ou 'dist', se for outro framework)
+          sshpass -p "$SERVER_PASSWORD" rsync -avz --delete \
+            ./build/ "$SERVER_USER"@"$SERVER_IP":"$SERVER_PATH"
