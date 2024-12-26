@@ -1,0 +1,49 @@
+name: Deploy Website
+
+on:
+  push:
+    branches:
+      - main  
+
+jobs:
+  build-and-deploy:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout Code
+        uses: actions/checkout@v3
+
+      - name: Build Backend
+        working-directory: ./backend/alpha
+        run: |
+          mvn clean install -DskipTests
+          mvn package
+
+      - name: Deploy Backend
+        env:
+          SERVER_USER: ${{ secrets.SERVER_USER }}
+          SERVER_IP: ${{ secrets.SERVER_IP }}
+          SERVER_PASSWORD: ${{ secrets.SERVER_PASSWORD }}
+          SERVER_PATH: ${{ secrets.BACKEND_PATH }}
+        run: |
+          sudo apt-get update && sudo apt-get install -y sshpass
+          sshpass -p "$SERVER_PASSWORD" scp target/*.jar $SERVER_USER@$SERVER_IP:$SERVER_PATH
+          sshpass -p "$SERVER_PASSWORD" ssh $SERVER_USER@$SERVER_IP << EOF
+            pkill -f 'java -jar' || true
+            nohup java -jar $SERVER_PATH/*.jar --server.servlet.context-path=/api > backend.log 2>&1 &
+          EOF
+
+      - name: Build Frontend
+        working-directory: ./frontend/alpha
+        run: |
+          npm install
+          npm run build
+
+      - name: Deploy Frontend
+        env:
+          SERVER_USER: ${{ secrets.SERVER_USER }}
+          SERVER_IP: ${{ secrets.SERVER_IP }}
+          SERVER_PASSWORD: ${{ secrets.SERVER_PASSWORD }}
+          SERVER_PATH: ${{ secrets.FRONTEND_PATH }}
+        run: |
+          sshpass -p "$SERVER_PASSWORD" rsync -avz --delete ./build/ $SERVER_USER@$SERVER_IP:$SERVER_PATH
