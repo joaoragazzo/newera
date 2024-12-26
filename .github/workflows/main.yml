@@ -10,77 +10,81 @@ jobs:
     runs-on: ubuntu-latest
 
     steps:
-      # 1) Faz checkout do repositório
+      # 1) Checkout do código
       - name: Check out code
         uses: actions/checkout@v3
 
-      # 2) Configura o Java
+      # 2) Setup Java (use a versão que seu projeto suporta)
       - name: Setup Java
         uses: actions/setup-java@v3
         with:
           distribution: temurin
-          # Use uma versão suportada (17 ou 11) ou confirme se 23 funciona
           java-version: 23
 
-      # 3) Build do backend (Spring Boot)
+      # 3) Build do backend
       - name: Build Backend
         working-directory: ./backend/alpha
         run: |
           mvn clean package -DskipTests
+          echo "=== Conteúdo da pasta target/ ==="
+          ls -l target
 
-      # 4) Instala o sshpass
-      - name: Install sshpass
-        run: |
-          sudo apt-get update && sudo apt-get install -y sshpass
-
-      # 5) Faz Deploy do backend
+      # 4) Deploy do backend
       - name: Deploy Backend
+        working-directory: ./backend/alpha
         env:
           SERVER_USER: ${{ secrets.SERVER_USER }}
           SERVER_IP: ${{ secrets.SERVER_IP }}
           SERVER_PASSWORD: ${{ secrets.SERVER_PASSWORD }}
           SERVER_PATH: ${{ secrets.BACKEND_PATH }}
-        working-directory: ./backend/alpha
         run: |
-          # Se quiser identificar melhor o jar, ajuste o nome do .jar aqui
-          # Exemplo: target/minha-app.jar
-          JAR_FILE=$(ls target/*.jar | head -n 1)
+          # Instala sshpass
+          sudo apt-get update && sudo apt-get install -y sshpass
 
-          # Copia o jar para o servidor
-          sshpass -p "$SERVER_PASSWORD" scp "$JAR_FILE" "$SERVER_USER"@"$SERVER_IP":"$SERVER_PATH"
+          # Identifica o .jar (pega o primeiro encontrado na pasta target)
+          JAR_FILE=$(find target -type f -name "*.jar" | head -n 1)
+          echo "Arquivo JAR encontrado: $JAR_FILE"
 
-          # Acessa o servidor, mata o processo antigo e sobe um novo
+          # Se não achou JAR_FILE, falha explicitamente
+          if [ -z "$JAR_FILE" ]; then
+            echo "Erro: nenhum arquivo .jar encontrado em target/. Verifique seu Maven build."
+            exit 1
+          fi
+
+          # Faz o SCP, desativando a verificação estrita da chave
+          sshpass -p "$SERVER_PASSWORD" scp -o StrictHostKeyChecking=no "$JAR_FILE" "$SERVER_USER"@"$SERVER_IP":"$SERVER_PATH"
+
+          # Mata a aplicação anterior e inicia a nova
           sshpass -p "$SERVER_PASSWORD" ssh -o StrictHostKeyChecking=no "$SERVER_USER"@"$SERVER_IP" << EOF
-            # Mata o processo antigo, se existir
+            # Tenta matar qualquer processo que contenha 'java -jar'
             pkill -f 'java -jar' || true
 
-            # Sobe a nova versão em background
-            nohup java -jar "$SERVER_PATH"/$(basename "$JAR_FILE") \
-              --server.servlet.context-path=/api > "$SERVER_PATH"/backend.log 2>&1 &
+            # Inicia a aplicação em segundo plano com nohup
+            nohup java -jar "$SERVER_PATH"/$(basename "$JAR_FILE") --server.servlet.context-path=/api > "$SERVER_PATH"/backend.log 2>&1 &
           EOF
 
-      # 6) Configura o Node.js
+      # 5) Setup Node para o frontend
       - name: Setup Node
         uses: actions/setup-node@v3
         with:
           node-version: 18
 
-      # 7) Build do frontend
+      # 6) Build do frontend
       - name: Build Frontend
         working-directory: ./frontend/alpha
         run: |
           npm install
           npm run build
 
-      # 8) Deploy do frontend
+      # 7) Deploy do frontend
       - name: Deploy Frontend
+        working-directory: ./frontend/alpha
         env:
           SERVER_USER: ${{ secrets.SERVER_USER }}
           SERVER_IP: ${{ secrets.SERVER_IP }}
           SERVER_PASSWORD: ${{ secrets.SERVER_PASSWORD }}
           SERVER_PATH: ${{ secrets.FRONTEND_PATH }}
-        working-directory: ./frontend/alpha
         run: |
-          # Envia o conteúdo da pasta 'build' (ou 'dist', se for outro framework)
           sshpass -p "$SERVER_PASSWORD" rsync -avz --delete \
+            -e "ssh -o StrictHostKeyChecking=no" \
             ./build/ "$SERVER_USER"@"$SERVER_IP":"$SERVER_PATH"
