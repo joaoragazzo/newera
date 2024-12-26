@@ -20,7 +20,7 @@ jobs:
         with:
           distribution: temurin
           # Use uma versão suportada (17 ou 11) ou confirme se 23 funciona
-          java-version: 17
+          java-version: 23
 
       # 3) Build do backend (Spring Boot)
       - name: Build Backend
