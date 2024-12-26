@@ -1,10 +1,10 @@
 export function NotificationContent( {title, description} ) {
     return (
         <div>
-            <div style={{ fontWeight: "bold", color: "#3c89e8" }}>
+            <div style={{ fontWeight: "bold" }}>
                 {title}
             </div>
-            <div style={{ color: "#ffffff" }}>
+            <div>
                 {description}
             </div>
         </div>

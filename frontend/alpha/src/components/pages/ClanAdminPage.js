@@ -11,19 +11,16 @@ import {
 } from "@ant-design/icons";
 import { format } from "date-fns";
 import { ptBR } from "date-fns/locale";
+import '@ant-design/v5-patch-for-react-19';
 import "../../App.css";
 
 const ClanAdminPage = () => {
-  const [users, setUsers] = useState([
-    { id: 1, name: "John Doe", rank: "Dono", kills: 10, deaths: 5, kdr: 2.0, lastSeenAt: "2024-12-23T18:30:00" },
-    { id: 2, name: "Jane Smith", rank: "Admin", kills: 10, deaths: 10, kdr: 1.0, lastSeenAt: "2024-12-23T18:30:00" },
-    { id: 3, name: "Bob Johnson", rank: "Membro", kills: 5, deaths: 10, kdr: 0.5, lastSeenAt: "2024-12-23T18:30:00" },
-    { id: 4, name: "John Doe", rank: "Membro", kills: 10, deaths: 5, kdr: 2.0, lastSeenAt: "2024-12-23T18:30:00" },
-    { id: 5, name: "Jane Smith", rank: "Membro", kills: 10, deaths: 10, kdr: 1.0, lastSeenAt: "2024-12-23T18:30:00" },
-    { id: 6, name: "Bob Johnson", rank: "Membro", kills: 5, deaths: 10, kdr: 0.5, lastSeenAt: "2024-12-23T18:30:00" }
-  ]);
+  
+  const [users, setUsers] = useState([]);
 
-  // Função para promover jogador
+
+
+
   const promotePlayer = async (id) => {
     try {
       const response = await axios.post(`/api/promote`, { playerId: id });
@@ -94,7 +91,7 @@ const ClanAdminPage = () => {
               : null
           }
           {
-            record.rank == "Admin" ?
+            record.rank === "Admin" ?
               (
                 <Button icon={<ArrowDownOutlined />}>
                   Rebaixar
@@ -103,7 +100,7 @@ const ClanAdminPage = () => {
               : null
           }
           {
-            record.rank == "Membro" || record.rank == "Admin" ?
+            record.rank === "Membro" || record.rank === "Admin" ?
               (
                 <Button danger>Expulsar</Button>
               )
@@ -124,10 +121,7 @@ const ClanAdminPage = () => {
             title="Online Members"
             bordered={false}
             style={{
-              background: "#1f1f1f",
-              color: "#fff",
               borderRadius: "8px",
-              boxShadow: "0 2px 8px rgba(0, 0, 0, 0.2)",
             }}
           >
             <Progress type="circle" percent={75} />
@@ -138,10 +132,7 @@ const ClanAdminPage = () => {
             title="Total Members"
             bordered={false}
             style={{
-              background: "#1f1f1f",
-              color: "#fff",
               borderRadius: "8px",
-              boxShadow: "0 2px 8px rgba(0, 0, 0, 0.2)",
             }}
           >
             <Progress type="circle" percent={100} format={() => users.length} />
@@ -152,8 +143,6 @@ const ClanAdminPage = () => {
             title="Activity Rate"
             bordered={false}
             style={{
-              background: "#1f1f1f",
-              color: "#fff",
               borderRadius: "8px",
               boxShadow: "0 2px 8px rgba(0, 0, 0, 0.2)",
             }}
@@ -163,7 +152,6 @@ const ClanAdminPage = () => {
         </Col>
       </Row>
 
-      {/* Tabela de Usuários */}
       <Card
         title="Clan Administration"
         extra={
@@ -178,10 +166,7 @@ const ClanAdminPage = () => {
         }
         bordered={false}
         style={{
-          background: "#1f1f1f",
-          color: "#fff",
           borderRadius: "8px",
-          boxShadow: "0 2px 8px rgba(0, 0, 0, 0.2)",
         }}
       >
         <Table

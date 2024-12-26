@@ -4,6 +4,8 @@ import { BrowserRouter as Router, Routes, Route, Navigate } from "react-router-d
 import ClanAdminPage from "./components/pages/ClanAdminPage";
 import CustomHeader from "./components/Header";
 import Sidebar from "./components/Sidebar";
+import '@ant-design/v5-patch-for-react-19';
+import Debug from "./components/pages/Debug";
 
 const { Content } = Layout;
 
@@ -16,29 +18,28 @@ const LazyAdmin = React.lazy(() => import("./components/pages/Admin"));
 
 const App = () => {
   const [collapsed, setCollapsed] = useState(false);
-  const [darkMode, setDarkMode] = useState(true);
 
   return (
-    <ConfigProvider theme={{ algorithm: darkMode ? theme.darkAlgorithm : theme.defaultAlgorithm }}>
+    <ConfigProvider theme={{ 
+      algorithm: theme.darkAlgorithm,
+      // components: {
+      //   Layout: {
+      //     siderBg: "#141414"
+      //   }
+      // }
+    }}>
       <Layout style={{ minHeight: "100vh" }}>
         <Sidebar
           collapsed={collapsed}
           onCollapse={(value) => setCollapsed(value)}
-          darkMode={darkMode}
         />
         <Layout>
-          <CustomHeader
-            title={"Clan Administration"}
-            darkMode={darkMode}
-            toggleTheme={() => setDarkMode(!darkMode)}
-          />
+          <CustomHeader/>
           <Content
             style={{
               margin: "16px",
               padding: "16px",
-              background: darkMode ? "#141414" : "#fff",
               borderRadius: "8px",
-              boxShadow: "0 2px 8px rgba(0, 0, 0, 0.1)",
             }}
           >
             <Router>
@@ -56,6 +57,7 @@ const App = () => {
                       )
                     }
                   />
+                  <Route path="/debug" element={<Debug />} />
                 </Routes>
               </React.Suspense>
             </Router>

@@ -9,7 +9,7 @@ import { NotificationAction } from "./notification/NotificationAction";
 
 const { Header } = Layout;
 
-const CustomHeader = ({ darkMode, title }) => {
+const CustomHeader = ({ title }) => {
   const [notifications, setNotifications] = useState([
     {
       id: 1,
@@ -28,15 +28,9 @@ const CustomHeader = ({ darkMode, title }) => {
     },
   ]);
 
-  const handleAction = (id, action) => {
-    console.log(`Notification ${id} ${action === "accept" ? "accepted" : "rejected"}`);
-    setNotifications((prev) => prev.filter((notif) => notif.id !== id));
-  };
-
   const notificationMenu = (
     <div
       style={{
-        background: darkMode ? "#1f1f1f" : "#fff",
         padding: "10px",
         borderRadius: "8px",
         boxShadow: "0 4px 12px rgba(0, 0, 0, 0.5)",
@@ -62,7 +56,6 @@ const CustomHeader = ({ darkMode, title }) => {
   return (
     <Header
       style={{
-        background: darkMode ? "#1f1f1f" : "#f0f2f5",
         display: "flex",
         justifyContent: "right",
         alignItems: "center",
@@ -83,7 +76,7 @@ const CustomHeader = ({ darkMode, title }) => {
             type="text"
             icon={
               <BellOutlined
-                style={{ fontSize: "20px", color: darkMode ? "#fff" : "#000" }}
+                style={{ fontSize: "20px" }}
               />
             }
           />

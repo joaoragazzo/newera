@@ -10,7 +10,6 @@ export function NotificationRoot( { children }) {
                 alignItems: "center",
                 padding: "10px",
                 borderRadius: "8px",
-                background: "#1f1f1f",
                 marginBottom: "10px",
             }}
         >
