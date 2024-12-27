@@ -1,0 +1,96 @@
+[INFO] Scanning for projects...
+[INFO] 
+[INFO] -------------------------< com.new_era:alpha >--------------------------
+[INFO] Building new_era 0.0.1-SNAPSHOT
+[INFO]   from pom.xml
+[INFO] --------------------------------[ jar ]---------------------------------
+[INFO] 
+[INFO] --- clean:3.4.0:clean (default-clean) @ alpha ---
+[INFO] Deleting /home/0x6a70/new_era/backend/alpha/target
+[INFO] 
+[INFO] --- resources:3.3.1:resources (default-resources) @ alpha ---
+[INFO] Copying 1 resource from src/main/resources to target/classes
+[INFO] Copying 1 resource from src/main/resources to target/classes
+[INFO] 
+[INFO] --- compiler:3.13.0:compile (default-compile) @ alpha ---
+[INFO] Recompiling the module because of changed source code.
+[INFO] Compiling 34 source files with javac [debug parameters release 23] to target/classes
+[INFO] 
+[INFO] --- resources:3.3.1:testResources (default-testResources) @ alpha ---
+[INFO] skip non existing resourceDirectory /home/0x6a70/new_era/backend/alpha/src/test/resources
+[INFO] 
+[INFO] --- compiler:3.13.0:testCompile (default-testCompile) @ alpha ---
+[INFO] Recompiling the module because of changed dependency.
+[INFO] Compiling 1 source file with javac [debug parameters release 23] to target/test-classes
+[INFO] 
+[INFO] --- surefire:3.0.0-M8:test (default-test) @ alpha ---
+[INFO] Using auto detected provider org.apache.maven.surefire.junitplatform.JUnitPlatformProvider
+[INFO] 
+[INFO] -------------------------------------------------------
+[INFO]  T E S T S
+[INFO] -------------------------------------------------------
+[INFO] Running com.new_era.alpha.TestClanFiliation
+03:56:01.257 [main] INFO org.springframework.test.context.support.AnnotationConfigContextLoaderUtils -- Could not detect default configuration classes for test class [com.new_era.alpha.TestClanFiliation]: TestClanFiliation does not declare any static, non-private, non-final, nested classes annotated with @Configuration.
+03:56:01.336 [main] INFO org.springframework.boot.test.context.SpringBootTestContextBootstrapper -- Found @SpringBootConfiguration com.new_era.alpha.NewEraApplication for test class com.new_era.alpha.TestClanFiliation
+
+  .   ____          _            __ _ _
+ /\\ / ___'_ __ _ _(_)_ __  __ _ \ \ \ \
+( ( )\___ | '_ | '_| | '_ \/ _` | \ \ \ \
+ \\/  ___)| |_)| | | | | || (_| |  ) ) ) )
+  '  |____| .__|_| |_|_| |_\__, | / / / /
+ =========|_|==============|___/=/_/_/_/
+
+ :: Spring Boot ::                (v3.4.0)
+
+2024-12-27T03:56:01.586-03:00  INFO 12051 --- [new_era] [           main] com.new_era.alpha.TestClanFiliation      : Starting TestClanFiliation using Java 23 with PID 12051 (started by root in /home/0x6a70/new_era/backend/alpha)
+2024-12-27T03:56:01.587-03:00  INFO 12051 --- [new_era] [           main] com.new_era.alpha.TestClanFiliation      : No active profile set, falling back to 1 default profile: "default"
+2024-12-27T03:56:01.952-03:00  INFO 12051 --- [new_era] [           main] .s.d.r.c.RepositoryConfigurationDelegate : Bootstrapping Spring Data JPA repositories in DEFAULT mode.
+2024-12-27T03:56:01.988-03:00  INFO 12051 --- [new_era] [           main] .s.d.r.c.RepositoryConfigurationDelegate : Finished Spring Data repository scanning in 31 ms. Found 6 JPA repository interfaces.
+2024-12-27T03:56:02.269-03:00  INFO 12051 --- [new_era] [           main] o.hibernate.jpa.internal.util.LogHelper  : HHH000204: Processing PersistenceUnitInfo [name: default]
+2024-12-27T03:56:02.301-03:00  INFO 12051 --- [new_era] [           main] org.hibernate.Version                    : HHH000412: Hibernate ORM core version 6.6.2.Final
+2024-12-27T03:56:02.321-03:00  INFO 12051 --- [new_era] [           main] o.h.c.internal.RegionFactoryInitiator    : HHH000026: Second-level cache disabled
+2024-12-27T03:56:02.454-03:00  INFO 12051 --- [new_era] [           main] o.s.o.j.p.SpringPersistenceUnitInfo      : No LoadTimeWeaver setup: ignoring JPA class transformer
+2024-12-27T03:56:02.469-03:00  INFO 12051 --- [new_era] [           main] com.zaxxer.hikari.HikariDataSource       : HikariPool-1 - Starting...
+2024-12-27T03:56:02.634-03:00  INFO 12051 --- [new_era] [           main] com.zaxxer.hikari.pool.HikariPool        : HikariPool-1 - Added connection com.mysql.cj.jdbc.ConnectionImpl@77856cc5
+2024-12-27T03:56:02.635-03:00  INFO 12051 --- [new_era] [           main] com.zaxxer.hikari.HikariDataSource       : HikariPool-1 - Start completed.
+2024-12-27T03:56:02.765-03:00  WARN 12051 --- [new_era] [           main] o.h.e.j.e.i.JdbcEnvironmentInitiator     : HHH000339: Could not obtain connection metadata: java.sql.SQLSyntaxErrorException: Unknown column 'RESERVED' in 'WHERE'
+2024-12-27T03:56:02.771-03:00  WARN 12051 --- [new_era] [           main] org.hibernate.orm.deprecation            : HHH90000025: MySQLDialect does not need to be specified explicitly using 'hibernate.dialect' (remove the property setting and it will be selected by default)
+2024-12-27T03:56:02.775-03:00  INFO 12051 --- [new_era] [           main] org.hibernate.orm.connections.pooling    : HHH10001005: Database info:
+	Database JDBC URL [Connecting through datasource 'HikariDataSource (HikariPool-1)']
+	Database driver: undefined/unknown
+	Database version: 8.0
+	Autocommit mode: undefined/unknown
+	Isolation level: undefined/unknown
+	Minimum pool size: undefined/unknown
+	Maximum pool size: undefined/unknown
+2024-12-27T03:56:03.232-03:00  INFO 12051 --- [new_era] [           main] o.h.e.t.j.p.i.JtaPlatformInitiator       : HHH000489: No JTA platform available (set 'hibernate.transaction.jta.platform' to enable JTA platform integration)
+2024-12-27T03:56:03.519-03:00  INFO 12051 --- [new_era] [           main] j.LocalContainerEntityManagerFactoryBean : Initialized JPA EntityManagerFactory for persistence unit 'default'
+2024-12-27T03:56:03.673-03:00  INFO 12051 --- [new_era] [           main] o.s.d.j.r.query.QueryEnhancerFactory     : Hibernate is in classpath; If applicable, HQL parser will be used.
+2024-12-27T03:56:03.983-03:00  WARN 12051 --- [new_era] [           main] JpaBaseConfiguration$JpaWebConfiguration : spring.jpa.open-in-view is enabled by default. Therefore, database queries may be performed during view rendering. Explicitly configure spring.jpa.open-in-view to disable this warning
+2024-12-27T03:56:04.005-03:00  WARN 12051 --- [new_era] [           main] .s.s.UserDetailsServiceAutoConfiguration : 
+
+Using generated security password: 80d43b6c-e6ba-49b4-a815-d0015f716e22
+
+This generated password is for development use only. Your security configuration must be updated before running your application in production.
+
+2024-12-27T03:56:04.012-03:00  INFO 12051 --- [new_era] [           main] r$InitializeUserDetailsManagerConfigurer : Global AuthenticationManager configured with UserDetailsService bean with name inMemoryUserDetailsManager
+2024-12-27T03:56:04.350-03:00  INFO 12051 --- [new_era] [           main] com.new_era.alpha.TestClanFiliation      : Started TestClanFiliation in 2.926 seconds (process running for 3.623)
+[INFO] Tests run: 67, Failures: 0, Errors: 0, Skipped: 0, Time elapsed: 4.52 s - in com.new_era.alpha.TestClanFiliation
+[INFO] 
+[INFO] Results:
+[INFO] 
+[INFO] Tests run: 67, Failures: 0, Errors: 0, Skipped: 0
+[INFO] 
+[INFO] 
+[INFO] --- jar:3.4.2:jar (default-jar) @ alpha ---
+[INFO] Building jar: /home/0x6a70/new_era/backend/alpha/target/alpha-0.0.1-SNAPSHOT.jar
+[INFO] 
+[INFO] --- spring-boot:3.4.0:repackage (repackage) @ alpha ---
+[INFO] Replacing main artifact /home/0x6a70/new_era/backend/alpha/target/alpha-0.0.1-SNAPSHOT.jar with repackaged archive, adding nested dependencies in BOOT-INF/.
+[INFO] The original artifact has been renamed to /home/0x6a70/new_era/backend/alpha/target/alpha-0.0.1-SNAPSHOT.jar.original
+[INFO] ------------------------------------------------------------------------
+[INFO] BUILD SUCCESS
+[INFO] ------------------------------------------------------------------------
+[INFO] Total time:  7.808 s
+[INFO] Finished at: 2024-12-27T03:56:06-03:00
+[INFO] ------------------------------------------------------------------------

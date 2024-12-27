@@ -30,11 +30,11 @@ public class Player {
     @GeneratedValue(strategy=GenerationType.IDENTITY)
     private Integer id;
 
-    @Column(name = "steam64id", nullable = false)
+    @Column(name = "steam64id", nullable = false, unique = true)
     private BigInteger steam64id;
 
 
-    @Column(name = "discord_id", nullable = true)
+    @Column(name = "discord_id", nullable = true, unique = true)
     private BigInteger discord_id;
 
     @Column(name = "karma", columnDefinition = "INTEGER DEFAULT 500")

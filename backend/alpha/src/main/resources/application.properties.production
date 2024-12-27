@@ -1,5 +1,5 @@
-spring.application.name=new_era_testing
-spring.datasource.url=jdbc:mysql://localhost:3306/new_era_testing
+spring.application.name=new_era
+spring.datasource.url=jdbc:mysql://localhost:3306/new_era
 spring.datasource.username=root
 spring.datasource.password=root
 spring.datasource.driver-class-name=com.mysql.cj.jdbc.Driver
