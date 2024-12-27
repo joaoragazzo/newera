@@ -24,6 +24,8 @@ chmod -R u+w /home/0x6a70/new_era/backend/alpha/target
 
 echo "[!] Reiniciando o serviço do backend"
 systemctl restart backend
+echo "[!] Ativando o serviço do backend"
+systemctl start backend
 
 echo "[!] Mudando as permissões do backend.jar"
 chown www-data:www-data "/var/www/backend/backend.jar"
@@ -38,7 +40,7 @@ npm run build > /home/0x6a70/new_era/logs/frontendBuild.log 2>&1
 echo "[!] Removendo os arquivos antigos"
 rm -rf /var/www/public_html/*
 
-echo "[!] Colocando novos arquivos no diretório do frontend"
+echo "[!] Enviando os arquivos do frontend para o diretório padrão (/var/www/public_html/)"
 cp -r /home/0x6a70/new_era/frontend/alpha/build/* /var/www/public_html/
 
 echo "[!] Reiniciando o NGINX..."
