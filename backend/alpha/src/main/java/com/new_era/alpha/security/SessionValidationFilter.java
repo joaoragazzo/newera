@@ -8,7 +8,6 @@ public class SessionValidationFilter extends AbstractPreAuthenticatedProcessingF
 
     @Override
     protected Object getPreAuthenticatedPrincipal(HttpServletRequest request) {
-        // Verifica se a variável da sessão está setada
         Object sessionVar = request.getSession().getAttribute("player_id");
         if (sessionVar == null) {
             throw new RuntimeException("Usuário não está logado.");

@@ -15,7 +15,6 @@ import com.new_era.alpha.entities.clan.Clan;
 import com.new_era.alpha.services.clan.ClanManagementService;
 import com.new_era.alpha.services.clan.ClanService;
 
-import jakarta.persistence.criteria.CriteriaBuilder.In;
 import jakarta.servlet.http.HttpSession;
 
 @RestController

@@ -1,17 +1,49 @@
-import { Button, Card, Form, Input } from "antd";
+import React, { useState, useEffect } from "react";
+import { Button, Card, Form, Select } from "antd";
 import FormItem from "antd/es/form/FormItem";
+import axios from "axios";
 
 
-const onFinish = (values) => {
-    console.log(values)
-};
+
 
 const Debug = () => {
-    return (
+    const [options, setOptions] = useState([]);
+
+    const getOptions = async () => {
+        try {
+            const response = await axios.get("/api/debug/allplayers");
+            const data = response.data;
+
+            const formattedOptions = Object.entries(data).map(([steam64id, name]) => ({
+                value: steam64id,
+                label: name,
+            }));
+
+            setOptions(formattedOptions);
+        } catch (error) {
+            console.error("Erro ao buscar jogadores:", error);
+        }
+    };
+
+    useEffect(() => {
+        getOptions(); 
+    }, []);
+
+    const onFinish = (values) => {
+        axios.post("/api/debug/setsteam64id", values)
+            .then((response) => {
+                console.log("Sucesso:", response.data);
+            })
+            .catch((error) => {
+                console.error("Erro:", error);
+            });
+    };
+
+    return (    
         <Card>
-            <Form method="POST" action={"/api/debug/setsteam64id"} onFinish={onFinish} >
-                <Form.Item name="steam64id" label="Steam64ID" rules={[{ required: true, message: "Provide the Steam64ID" }]}>
-                    <Input placeholder="Set steam64id from a player"></Input>
+            <Form onFinish={onFinish} >
+                <Form.Item name="player" label="Jogador" rules={[{ required: true, message: "You must select any player" }]}>
+                    <Select placeholder="Select a player" options={options}></Select>
                 </Form.Item>
                 <Button type="primary" htmlType="submit" >Definir</Button>
             </Form>

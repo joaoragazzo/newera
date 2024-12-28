@@ -37,8 +37,8 @@ public class Player {
     @Column(name = "discord_id", nullable = true, unique = true)
     private BigInteger discord_id;
 
-    @Column(name = "karma", columnDefinition = "INTEGER DEFAULT 500")
-    private Integer karma;
+    @Column(name = "karma")
+    private Integer karma = 500;
 
     @OneToMany(mappedBy = "player")
     @JsonIgnore

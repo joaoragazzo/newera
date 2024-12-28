@@ -23,7 +23,6 @@ public interface ClanFiliationRepository extends JpaRepository<ClanFiliation, In
     @Query("SELECT cf FROM ClanFiliation cf WHERE cf.clan.id = :clanId AND cf.left_at IS NULL")
     List<ClanFiliation> findAllActiveClanFiliationByClanId(@Param("clanId") Integer clanId);
 
-
     @Query("SELECT cf FROM ClanFiliation cf WHERE cf.player.id = :player_id AND cf.left_at IS NULL")
     Optional<ClanFiliation> findActiveClanByPlayerId(@Param("player_id") Integer player_id);
 }

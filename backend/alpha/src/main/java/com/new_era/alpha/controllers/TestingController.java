@@ -6,11 +6,16 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
+import javax.print.DocFlavor.STRING;
+
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.new_era.alpha.entities.player.Nick;
@@ -19,6 +24,7 @@ import com.new_era.alpha.repositories.player.NickRepository;
 import com.new_era.alpha.repositories.player.PlayerRepository;
 import com.new_era.alpha.services.player.PlayerService;
 
+import jakarta.servlet.http.HttpSession;
 import lombok.AllArgsConstructor;
 
 @RestController
@@ -53,7 +59,7 @@ public class TestingController {
 
         Player player;
 
-        for (int i = 0; i < 100; i++) {
+        for (long i = 0L; i < 100L; i++) {
             player = new Player();
             player.setSteam64id(BigInteger.valueOf(76561198118616961L + i));
             player = playerRepository.save(player);
@@ -66,7 +72,7 @@ public class TestingController {
 
             nick = new Nick();
             nick.setCreated_at(LocalDateTime.now().minusDays(1));
-            nick.setName(String.format("player_%d_new", i));
+            nick.setName(String.format("player_%d", i));
             nick.setPlayer(player);
             nickRepository.save(nick);
         }
@@ -75,5 +81,27 @@ public class TestingController {
         return new ResponseEntity<>(response, HttpStatus.OK);
 
     }
+
+    @GetMapping("/allplayers")
+    public ResponseEntity<Map<BigInteger, String>> getAllPlayers() {
+        List<Player> players = playerRepository.findAll();
+
+        Map<BigInteger, String> response = new HashMap<>();
+
+        for (Player player : players) {
+            String nick = playerService.getLastNick(player.getId());
+            response.put(player.getSteam64id(), nick);
+        }
+
+        return new ResponseEntity<>(response, HttpStatus.OK);
+    }
+
+    @PostMapping("/setsteam64id")
+    public ResponseEntity<String> setSteam64id(HttpSession session, @RequestBody Map<String, String> payload) {
+        String player_id = payload.get("player");
+        
+        session.setAttribute("playerid", player_id);
+        return ResponseEntity.ok("OK");
+    } 
 
 }

@@ -12,7 +12,7 @@ import com.new_era.alpha.entities.player.Nick;
 @Repository
 public interface NickRepository extends JpaRepository<Nick, Integer> {
     
-    @Query("SELECT n FROM Nick n WHERE n.player.id = :playerId ORDER BY n.created_at DESC")
+    @Query("SELECT n FROM Nick n WHERE n.player.id = :playerId ORDER BY n.created_at DESC LIMIT 1")
     Optional<Nick> findMostRecentNickByPlayerId(@Param("playerId") Integer playerId);
 
 }
