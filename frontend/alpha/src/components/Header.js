@@ -1,32 +1,30 @@
-import React, { useState } from "react";
-import { Layout, Badge, Dropdown, List, Button } from "antd";
+import React, { useEffect, useState } from "react";
+import { Layout, Badge, Dropdown, List, Button, message } from "antd";
 import { BellOutlined, CheckOutlined, CloseOutlined, RocketFilled } from "@ant-design/icons";
 import { NotificationRoot } from "./notification/NotificationRoot";
 import { NotificationContent } from "./notification/NotificationContent";
 import { NotificationIcon } from "./notification/NotificationIcon";
 import { NotificationActions } from "./notification/NotificationActions";
 import { NotificationAction } from "./notification/NotificationAction";
+import axios from "axios";
 
 const { Header } = Layout;
 
-const CustomHeader = ({ title }) => {
-  const [notifications, setNotifications] = useState([
-    {
-      id: 1,
-      title: "Você foi convidado",
-      description: "Clique para aceitar ou recusar o convite. Lorem ipsum dolor sit amet lorem ipsum",
-    },
-    {
-      id: 2,
-      title: "Nova mensagem",
-      description: "Você tem uma nova mensagem.",
-    },
-    {
-      id: 3,
-      title: "Evento de clã",
-      description: "Participe do evento amanhã às 20h.",
-    },
-  ]);
+const CustomHeader = () => {
+  const [notifications, setNotifications] = useState([]);
+
+  const fetchNotifications = async () => {
+    try {
+      const response = await axios.post("/api/notification/list");
+      setNotifications(response.data)
+    } catch (error) {
+      message.error(error.response.data.error)
+    } 
+  }
+
+  useEffect(
+    () => {fetchNotifications()}, 
+    []);
 
   const notificationMenu = (
     <div
@@ -42,9 +40,10 @@ const CustomHeader = ({ title }) => {
         renderItem={(item) => (
           <NotificationRoot>
             <NotificationIcon icon={RocketFilled}/>
-            <NotificationContent title={item.title} description={item.description} />
+            <NotificationContent title={item.title} description={item.message} />
             <NotificationActions>
-              <NotificationAction icon={CheckOutlined} />
+              {item.callback_for_accept ? <NotificationAction icon={CheckOutlined} callback={item.callback_for_accept} /> : <></>}
+              
             </NotificationActions>
           </NotificationRoot>
         )}

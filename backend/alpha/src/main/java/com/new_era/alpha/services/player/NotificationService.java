@@ -1,6 +1,7 @@
 package com.new_era.alpha.services.player;
 
 import java.time.LocalDateTime;
+import java.util.List;
 
 import org.springframework.stereotype.Service;
 
@@ -21,6 +22,10 @@ public class NotificationService {
     private final NotificationRepository notificationRepository;
     private final PlayerService playerService;
     
+    public List<Notification> getAllNotificationsByPlayerId(Integer player_id) {
+        return notificationRepository.findNotSeenNotificationByPlayerId(player_id);
+    }
+
     public void sendNotification(NotificationDTO notification_dto) {
         Integer player_id = notification_dto.target_player_id();
 

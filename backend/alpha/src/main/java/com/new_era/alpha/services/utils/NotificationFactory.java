@@ -15,8 +15,8 @@ public class NotificationFactory {
                 dto.inviter_name());
 
         String title = NotificationMessages.CLAN_INVITE_TITLE;
-        String callbackForAccept = String.format("/clan/accept/%d", dto.invite_id());
-        String callbackForDecline = String.format("/clan/decline/%d", dto.invite_id());
+        String callbackForAccept = String.format("/api/clan/accept/%d", dto.invite_id());
+        String callbackForDecline = String.format("/api/clan/decline/%d", dto.invite_id());
         String iconUrl = "/";
         String href = "";
 

@@ -21,15 +21,41 @@ const { Title, Paragraph } = Typography;
 
 const ClanAdminPage = () => {
 
+  const [isCreateModalVisible, setIsCreateModalVisible] = useState(false);
+  const [isEditModalVisible, setIsEditModalVisible] = useState(false);
+
   const [createForm] = Form.useForm();
   const [editForm] = Form.useForm();
+
   const [users, setUsers] = useState([]);
   const [clanName, setClanName] = useState();
   const [clanTag, setClanTag] = useState();
   const [clanColor, setClanColor] = useState();
-  const [isCreateModalVisible, setisCreateModalVisible] = useState(false);
-  const [isEditModalVisible, setIsEditModalVisible] = useState(false);
+  
   const [memberOfAClan, setMemberOfAClan] = useState(false);
+
+  const createClan = async (values) => {
+    try {
+      const response = await axios.post("/api/clan/create", values);
+      setIsCreateModalVisible(false);
+      setMemberOfAClan(true);
+      await fetchInfo();
+      message.success(response.data.success)
+    } catch (error) {
+      message.error(error.response.data.error)
+    }
+  }
+
+  const editClan = async (values) => {
+    try {
+      const response = await axios.post("/api/clan/edit", values);
+      setIsEditModalVisible(false);
+      await fetchInfo();
+      message.success(response.data.success)
+    } catch (error) {
+      message.error(error.response.data.error)
+    }
+  }
 
   const fetchInfo = async () => {
     try {
@@ -54,11 +80,11 @@ const ClanAdminPage = () => {
   }, []);
 
   const showCreateModal = () => {
-    setisCreateModalVisible(true);
+    setIsCreateModalVisible(true);
   };
 
   const closeCreateModal = () => {
-    setisCreateModalVisible(false);
+    setIsCreateModalVisible(false);
   }
 
   const showEditModal = () => {
@@ -67,29 +93,6 @@ const ClanAdminPage = () => {
 
   const closeEditModal = () => {
     setIsEditModalVisible(false)
-  }
-
-  const createClan = async (values) => {
-    try {
-      const response = await axios.post("/api/clan/create", values);
-      setisCreateModalVisible(false);
-      setMemberOfAClan(true);
-      await fetchInfo();
-      message.success(response.data.success)
-    } catch (error) {
-      message.error(error.response.data.error)
-    }
-  }
-
-  const editClan = async (values) => {
-    try {
-      const response = await axios.post("/api/clan/edit", values);
-      setIsEditModalVisible(false);
-      await fetchInfo();
-      message.success(response.data.success)
-    } catch (error) {
-      message.error(error.response.data.error)
-    }
   }
 
   const onCreateOk = () => {
