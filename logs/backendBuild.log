@@ -30,8 +30,8 @@
 [INFO]  T E S T S
 [INFO] -------------------------------------------------------
 [INFO] Running com.new_era.alpha.TestClanFiliation
-02:42:28.361 [main] INFO org.springframework.test.context.support.AnnotationConfigContextLoaderUtils -- Could not detect default configuration classes for test class [com.new_era.alpha.TestClanFiliation]: TestClanFiliation does not declare any static, non-private, non-final, nested classes annotated with @Configuration.
-02:42:28.431 [main] INFO org.springframework.boot.test.context.SpringBootTestContextBootstrapper -- Found @SpringBootConfiguration com.new_era.alpha.NewEraApplication for test class com.new_era.alpha.TestClanFiliation
+03:27:51.758 [main] INFO org.springframework.test.context.support.AnnotationConfigContextLoaderUtils -- Could not detect default configuration classes for test class [com.new_era.alpha.TestClanFiliation]: TestClanFiliation does not declare any static, non-private, non-final, nested classes annotated with @Configuration.
+03:27:51.820 [main] INFO org.springframework.boot.test.context.SpringBootTestContextBootstrapper -- Found @SpringBootConfiguration com.new_era.alpha.NewEraApplication for test class com.new_era.alpha.TestClanFiliation
 
   .   ____          _            __ _ _
  /\\ / ___'_ __ _ _(_)_ __  __ _ \ \ \ \
@@ -42,20 +42,20 @@
 
  :: Spring Boot ::                (v3.4.0)
 
-2024-12-29T02:42:28.636-03:00  INFO 85135 --- [new_era] [           main] com.new_era.alpha.TestClanFiliation      : Starting TestClanFiliation using Java 23 with PID 85135 (started by root in /home/0x6a70/new_era/backend/alpha)
-2024-12-29T02:42:28.636-03:00  INFO 85135 --- [new_era] [           main] com.new_era.alpha.TestClanFiliation      : No active profile set, falling back to 1 default profile: "default"
-2024-12-29T02:42:28.989-03:00  INFO 85135 --- [new_era] [           main] .s.d.r.c.RepositoryConfigurationDelegate : Bootstrapping Spring Data JPA repositories in DEFAULT mode.
-2024-12-29T02:42:29.026-03:00  INFO 85135 --- [new_era] [           main] .s.d.r.c.RepositoryConfigurationDelegate : Finished Spring Data repository scanning in 31 ms. Found 6 JPA repository interfaces.
-2024-12-29T02:42:29.278-03:00  INFO 85135 --- [new_era] [           main] o.hibernate.jpa.internal.util.LogHelper  : HHH000204: Processing PersistenceUnitInfo [name: default]
-2024-12-29T02:42:29.303-03:00  INFO 85135 --- [new_era] [           main] org.hibernate.Version                    : HHH000412: Hibernate ORM core version 6.6.2.Final
-2024-12-29T02:42:29.326-03:00  INFO 85135 --- [new_era] [           main] o.h.c.internal.RegionFactoryInitiator    : HHH000026: Second-level cache disabled
-2024-12-29T02:42:29.464-03:00  INFO 85135 --- [new_era] [           main] o.s.o.j.p.SpringPersistenceUnitInfo      : No LoadTimeWeaver setup: ignoring JPA class transformer
-2024-12-29T02:42:29.479-03:00  INFO 85135 --- [new_era] [           main] com.zaxxer.hikari.HikariDataSource       : HikariPool-1 - Starting...
-2024-12-29T02:42:29.679-03:00  INFO 85135 --- [new_era] [           main] com.zaxxer.hikari.pool.HikariPool        : HikariPool-1 - Added connection com.mysql.cj.jdbc.ConnectionImpl@35b3c1f6
-2024-12-29T02:42:29.680-03:00  INFO 85135 --- [new_era] [           main] com.zaxxer.hikari.HikariDataSource       : HikariPool-1 - Start completed.
-2024-12-29T02:42:29.879-03:00  WARN 85135 --- [new_era] [           main] o.h.e.j.e.i.JdbcEnvironmentInitiator     : HHH000339: Could not obtain connection metadata: java.sql.SQLSyntaxErrorException: Unknown column 'RESERVED' in 'WHERE'
-2024-12-29T02:42:29.888-03:00  WARN 85135 --- [new_era] [           main] org.hibernate.orm.deprecation            : HHH90000025: MySQLDialect does not need to be specified explicitly using 'hibernate.dialect' (remove the property setting and it will be selected by default)
-2024-12-29T02:42:29.896-03:00  INFO 85135 --- [new_era] [           main] org.hibernate.orm.connections.pooling    : HHH10001005: Database info:
+2024-12-29T03:27:52.029-03:00  INFO 100637 --- [new_era] [           main] com.new_era.alpha.TestClanFiliation      : Starting TestClanFiliation using Java 23 with PID 100637 (started by root in /home/0x6a70/new_era/backend/alpha)
+2024-12-29T03:27:52.030-03:00  INFO 100637 --- [new_era] [           main] com.new_era.alpha.TestClanFiliation      : No active profile set, falling back to 1 default profile: "default"
+2024-12-29T03:27:52.507-03:00  INFO 100637 --- [new_era] [           main] .s.d.r.c.RepositoryConfigurationDelegate : Bootstrapping Spring Data JPA repositories in DEFAULT mode.
+2024-12-29T03:27:52.556-03:00  INFO 100637 --- [new_era] [           main] .s.d.r.c.RepositoryConfigurationDelegate : Finished Spring Data repository scanning in 42 ms. Found 6 JPA repository interfaces.
+2024-12-29T03:27:52.926-03:00  INFO 100637 --- [new_era] [           main] o.hibernate.jpa.internal.util.LogHelper  : HHH000204: Processing PersistenceUnitInfo [name: default]
+2024-12-29T03:27:52.966-03:00  INFO 100637 --- [new_era] [           main] org.hibernate.Version                    : HHH000412: Hibernate ORM core version 6.6.2.Final
+2024-12-29T03:27:52.993-03:00  INFO 100637 --- [new_era] [           main] o.h.c.internal.RegionFactoryInitiator    : HHH000026: Second-level cache disabled
+2024-12-29T03:27:53.179-03:00  INFO 100637 --- [new_era] [           main] o.s.o.j.p.SpringPersistenceUnitInfo      : No LoadTimeWeaver setup: ignoring JPA class transformer
+2024-12-29T03:27:53.198-03:00  INFO 100637 --- [new_era] [           main] com.zaxxer.hikari.HikariDataSource       : HikariPool-1 - Starting...
+2024-12-29T03:27:53.432-03:00  INFO 100637 --- [new_era] [           main] com.zaxxer.hikari.pool.HikariPool        : HikariPool-1 - Added connection com.mysql.cj.jdbc.ConnectionImpl@48d5ca17
+2024-12-29T03:27:53.433-03:00  INFO 100637 --- [new_era] [           main] com.zaxxer.hikari.HikariDataSource       : HikariPool-1 - Start completed.
+2024-12-29T03:27:53.635-03:00  WARN 100637 --- [new_era] [           main] o.h.e.j.e.i.JdbcEnvironmentInitiator     : HHH000339: Could not obtain connection metadata: java.sql.SQLSyntaxErrorException: Unknown column 'RESERVED' in 'WHERE'
+2024-12-29T03:27:53.651-03:00  WARN 100637 --- [new_era] [           main] org.hibernate.orm.deprecation            : HHH90000025: MySQLDialect does not need to be specified explicitly using 'hibernate.dialect' (remove the property setting and it will be selected by default)
+2024-12-29T03:27:53.658-03:00  INFO 100637 --- [new_era] [           main] org.hibernate.orm.connections.pooling    : HHH10001005: Database info:
 	Database JDBC URL [Connecting through datasource 'HikariDataSource (HikariPool-1)']
 	Database driver: undefined/unknown
 	Database version: 8.0
@@ -63,19 +63,19 @@
 	Isolation level: undefined/unknown
 	Minimum pool size: undefined/unknown
 	Maximum pool size: undefined/unknown
-2024-12-29T02:42:30.568-03:00  INFO 85135 --- [new_era] [           main] o.h.e.t.j.p.i.JtaPlatformInitiator       : HHH000489: No JTA platform available (set 'hibernate.transaction.jta.platform' to enable JTA platform integration)
-2024-12-29T02:42:30.872-03:00  INFO 85135 --- [new_era] [           main] j.LocalContainerEntityManagerFactoryBean : Initialized JPA EntityManagerFactory for persistence unit 'default'
-2024-12-29T02:42:31.028-03:00  INFO 85135 --- [new_era] [           main] o.s.d.j.r.query.QueryEnhancerFactory     : Hibernate is in classpath; If applicable, HQL parser will be used.
-2024-12-29T02:42:31.367-03:00  WARN 85135 --- [new_era] [           main] JpaBaseConfiguration$JpaWebConfiguration : spring.jpa.open-in-view is enabled by default. Therefore, database queries may be performed during view rendering. Explicitly configure spring.jpa.open-in-view to disable this warning
-2024-12-29T02:42:31.392-03:00  WARN 85135 --- [new_era] [           main] .s.s.UserDetailsServiceAutoConfiguration : 
+2024-12-29T03:27:54.319-03:00  INFO 100637 --- [new_era] [           main] o.h.e.t.j.p.i.JtaPlatformInitiator       : HHH000489: No JTA platform available (set 'hibernate.transaction.jta.platform' to enable JTA platform integration)
+2024-12-29T03:27:54.634-03:00  INFO 100637 --- [new_era] [           main] j.LocalContainerEntityManagerFactoryBean : Initialized JPA EntityManagerFactory for persistence unit 'default'
+2024-12-29T03:27:54.802-03:00  INFO 100637 --- [new_era] [           main] o.s.d.j.r.query.QueryEnhancerFactory     : Hibernate is in classpath; If applicable, HQL parser will be used.
+2024-12-29T03:27:55.171-03:00  WARN 100637 --- [new_era] [           main] JpaBaseConfiguration$JpaWebConfiguration : spring.jpa.open-in-view is enabled by default. Therefore, database queries may be performed during view rendering. Explicitly configure spring.jpa.open-in-view to disable this warning
+2024-12-29T03:27:55.182-03:00  WARN 100637 --- [new_era] [           main] .s.s.UserDetailsServiceAutoConfiguration : 
 
-Using generated security password: 3e8404bd-a922-4315-bc1d-2137ee4add1b
+Using generated security password: 2204f522-f2d8-46bf-b7bb-d9020490ccbe
 
 This generated password is for development use only. Your security configuration must be updated before running your application in production.
 
-2024-12-29T02:42:31.402-03:00  INFO 85135 --- [new_era] [           main] r$InitializeUserDetailsManagerConfigurer : Global AuthenticationManager configured with UserDetailsService bean with name inMemoryUserDetailsManager
-2024-12-29T02:42:31.813-03:00  INFO 85135 --- [new_era] [           main] com.new_era.alpha.TestClanFiliation      : Started TestClanFiliation in 3.311 seconds (process running for 3.846)
-[INFO] Tests run: 68, Failures: 0, Errors: 0, Skipped: 0, Time elapsed: 4.944 s - in com.new_era.alpha.TestClanFiliation
+2024-12-29T03:27:55.189-03:00  INFO 100637 --- [new_era] [           main] r$InitializeUserDetailsManagerConfigurer : Global AuthenticationManager configured with UserDetailsService bean with name inMemoryUserDetailsManager
+2024-12-29T03:27:55.650-03:00  INFO 100637 --- [new_era] [           main] com.new_era.alpha.TestClanFiliation      : Started TestClanFiliation in 3.769 seconds (process running for 4.33)
+[INFO] Tests run: 68, Failures: 0, Errors: 0, Skipped: 0, Time elapsed: 5.196 s - in com.new_era.alpha.TestClanFiliation
 [INFO] 
 [INFO] Results:
 [INFO] 
@@ -91,6 +91,6 @@ This generated password is for development use only. Your security configuration
 [INFO] ------------------------------------------------------------------------
 [INFO] BUILD SUCCESS
 [INFO] ------------------------------------------------------------------------
-[INFO] Total time:  8.202 s
-[INFO] Finished at: 2024-12-29T02:42:33-03:00
+[INFO] Total time:  8.974 s
+[INFO] Finished at: 2024-12-29T03:27:57-03:00
 [INFO] ------------------------------------------------------------------------

@@ -21,12 +21,14 @@ const { Title, Paragraph } = Typography;
 
 const ClanAdminPage = () => {
 
-  const [form] = Form.useForm();
+  const [createForm] = Form.useForm();
+  const [editForm] = Form.useForm();
   const [users, setUsers] = useState([]);
   const [clanName, setClanName] = useState();
   const [clanTag, setClanTag] = useState();
   const [clanColor, setClanColor] = useState();
-  const [isModalVisible, setIsModalVisible] = useState(false);
+  const [isCreateModalVisible, setisCreateModalVisible] = useState(false);
+  const [isEditModalVisible, setIsEditModalVisible] = useState(false);
   const [memberOfAClan, setMemberOfAClan] = useState(false);
 
   const fetchInfo = async () => {
@@ -51,18 +53,26 @@ const ClanAdminPage = () => {
     fetchInfo();
   }, []);
 
-  const showModal = () => {
-    setIsModalVisible(true);
+  const showCreateModal = () => {
+    setisCreateModalVisible(true);
   };
 
-  const closeModal = () => {
-    setIsModalVisible(false);
+  const closeCreateModal = () => {
+    setisCreateModalVisible(false);
+  }
+
+  const showEditModal = () => {
+    setIsEditModalVisible(true)
+  }
+
+  const closeEditModal = () => {
+    setIsEditModalVisible(false)
   }
 
   const createClan = async (values) => {
     try {
       const response = await axios.post("/api/clan/create", values);
-      setIsModalVisible(false);
+      setisCreateModalVisible(false);
       setMemberOfAClan(true);
       await fetchInfo();
       message.success(response.data.success)
@@ -71,8 +81,23 @@ const ClanAdminPage = () => {
     }
   }
 
-  const onOk = () => {
-    form.submit();
+  const editClan = async (values) => {
+    try {
+      const response = await axios.post("/api/clan/edit", values);
+      setIsEditModalVisible(false);
+      await fetchInfo();
+      message.success(response.data.success)
+    } catch (error) {
+      message.error(error.response.data.error)
+    }
+  }
+
+  const onCreateOk = () => {
+    createForm.submit();
+  }
+
+  const onEditOk = () => {
+    editForm.submit();
   }
 
   const CreateClanCard = () => {
@@ -80,12 +105,12 @@ const ClanAdminPage = () => {
       <>
         <Modal
           title="Criação de um novo clan"
-          open={isModalVisible}
-          onCancel={closeModal}
+          open={isCreateModalVisible}
+          onCancel={closeCreateModal}
           okText="Criar clan"
           cancelText="Deixar para depois"
-          onOk={onOk}>
-          <Form layout="vertical" id="form-clan" form={form} onFinish={createClan}>
+          onOk={onCreateOk}>
+          <Form layout="vertical" id="form-clan" form={createForm} onFinish={createClan}>
             <Form.Item label="Nome do clan" name="name" rules={[
               { required: true, message: "Você precisa escolher um nome de um clan." },
               { max: 32, message: "O nome do clan deve ser no máximo 32 caracteres." }
@@ -102,7 +127,7 @@ const ClanAdminPage = () => {
             <FormItem label="Selecione uma cor para representar o clan" name="color" >
               <ColorPicker onChange={(color) => {
                 const hexColor = color.toHexString();
-                form.setFieldValue("color", hexColor);
+                createForm.setFieldValue("color", hexColor);
               }}></ColorPicker>
             </FormItem>
           </Form>
@@ -111,9 +136,55 @@ const ClanAdminPage = () => {
         <Card style={{ textAlign: "center" }}>
           <Title level={2}>Você não pertence a nenhum clan atualmente!</Title>
           <Paragraph>Você pode criar um clan em poucos segundos ao clicar no botão abaixo</Paragraph>
-          <Button icon={<FileAddFilled />} type="primary" style={{ width: "45%" }} onClick={showModal} > Criar um novo clan agora </Button>
+          <Button icon={<FileAddFilled />} type="primary" style={{ width: "45%" }} onClick={showCreateModal} > Criar um novo clan agora </Button>
         </Card>
       </>
+    );
+  }
+
+  const EditClanCard = () => {
+    return (
+      <Modal
+        title={`Editar informações de ${clanName}`}
+        open={isEditModalVisible}
+        onCancel={closeEditModal}
+        okText="Salvar edição"
+        cancelText="Cancelar"
+        onOk={onEditOk}
+      >
+        <Form
+          layout="vertical"
+          id="form-clan"
+          form={editForm}
+          onFinish={editClan}
+          initialValues={{
+            name: clanName,
+            tag: clanTag,
+            color: clanColor
+          }}
+        >
+          <Form.Item label="Nome do clan" name="name" rules={[
+            { required: true, message: "Você precisa escolher um nome de um clan." },
+            { max: 32, message: "O nome do clan deve ser no máximo 32 caracteres." }
+          ]}>
+            <Input></Input>
+          </Form.Item>
+          <FormItem label="Tag do clan" name="tag" rules={[
+            { required: true, message: "Você precisa escolher uma tag de um clan." },
+            { min: 2, message: "A tag deve ter no mínimo 2 caracteres." },
+            { max: 4, message: "A tag deve ter no máximo 4 caracteres." }
+          ]}>
+            <Input></Input>
+          </FormItem>
+          <FormItem label="Selecione uma cor para representar o clan" name="color" >
+            <ColorPicker value={clanColor}
+              onChange={(color) => {
+                const hexColor = color.toHexString();
+                editForm.setFieldValue("color", hexColor);
+              }}></ColorPicker>
+          </FormItem>
+        </Form>
+      </Modal>
     );
   }
 
@@ -160,29 +231,32 @@ const ClanAdminPage = () => {
 
   const CreateMembersListCard = () => {
     return (
-      <Card
-        title={<Title level={3}>[<span style={{ color: clanColor }}>{clanTag}</span>] {clanName}</Title>}
-        extra={
-          <>
-            <Button type="primary" icon={<EditFilled />} style={{ marginRight: "10px" }}>
-              Editar clan
-            </Button>
-            <Button type="primary" icon={<PlusOutlined />}>
-              Convidar novos membros
-            </Button>
-          </>
-        }
-        bordered={false}
-        style={{
-          borderRadius: "8px",
-        }}
-      >
-        <Table
-          dataSource={users.map((user) => ({ ...user, key: user.id }))}
-          columns={columns}
-          pagination={{ pageSize: 5 }}
-        />
-      </Card>
+      <>
+        <EditClanCard />
+        <Card
+          title={<Title level={3}>[<span style={{ color: clanColor }}>{clanTag}</span>] {clanName}</Title>}
+          extra={
+            <>
+              <Button type="primary" icon={<EditFilled />} style={{ marginRight: "10px" }} onClick={showEditModal}>
+                Editar clan
+              </Button>
+              <Button type="primary" icon={<PlusOutlined />}>
+                Convidar novos membros
+              </Button>
+            </>
+          }
+          bordered={false}
+          style={{
+            borderRadius: "8px",
+          }}
+        >
+          <Table
+            dataSource={users.map((user) => ({ ...user, key: user.id }))}
+            columns={columns}
+            pagination={{ pageSize: 5 }}
+          />
+        </Card>
+      </>
     );
   }
 

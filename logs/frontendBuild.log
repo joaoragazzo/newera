@@ -37,9 +37,9 @@ To ignore, add // eslint-disable-next-line to the line before.
 
 File sizes after gzip:
 
-  402.2 kB (-1 B)  build/static/js/main.fe47b841.js
-  264 B            build/static/css/main.e6c13ad2.css
-  210 B            build/static/js/624.550f73c3.chunk.js
+  402.37 kB (+7 B)  build/static/js/main.4592e56d.js
+  264 B             build/static/css/main.e6c13ad2.css
+  210 B             build/static/js/624.550f73c3.chunk.js
 
 The project was built assuming it is hosted at /.
 You can control this with the homepage field in your package.json.

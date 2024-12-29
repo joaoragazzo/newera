@@ -23,7 +23,6 @@ import com.new_era.alpha.services.clan.ClanManagementService;
 import com.new_era.alpha.services.clan.ClanService;
 import com.new_era.alpha.services.player.PlayerService;
 
-import jakarta.servlet.http.HttpSession;
 import lombok.AllArgsConstructor;
 
 @RestController
@@ -60,9 +59,9 @@ public class ClanController {
     }
 
     @PostMapping("/delete")
-    public ResponseEntity<Map<String, String>> delete(HttpSession session) {
+    public ResponseEntity<Map<String, String>> delete() {
         
-        Integer player_id = (Integer) session.getAttribute("player_id");
+        Integer player_id = session.getPlayer_id();
         Map<String, String> response = new HashMap<>();
 
         clanManagementService.deleteClanWithOwner(player_id);
@@ -70,6 +69,24 @@ public class ClanController {
 
         response.put("message", "Clan desativado com sucesso!");
         return new ResponseEntity<>(response, HttpStatus.OK);
+    }
+
+    @PostMapping("/edit")
+    public ResponseEntity<Map<String, String>> edit(@RequestBody Map<String, String> payload) {
+        Integer player_id = session.getPlayer_id();
+        Clan clan = clanFiliationService.getPlayerClanByPlayerId(player_id);
+        String color = payload.get("color");
+        String tag = payload.get("tag");
+        String name = payload.get("name");
+        clanService.changeColor(clan.getId(), color);
+        clanService.changeTag(clan.getId(), tag);
+        clanService.changeName(clan.getId(), name);
+
+        Map<String, String> response = new HashMap<>();
+
+        response.put("success", "As informações foram alteradas com sucesso!");
+        return new ResponseEntity<>(response, HttpStatus.OK);
+    
     }
 
     @PostMapping("/info")
