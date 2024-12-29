@@ -33,6 +33,7 @@ const CustomHeader = () => {
         borderRadius: "8px",
         boxShadow: "0 4px 12px rgba(0, 0, 0, 0.5)",
         maxWidth: "400px",
+        backgroundColor: "#1f1f1f"
       }}
     >      
       <List
@@ -44,7 +45,6 @@ const CustomHeader = () => {
             <NotificationActions>
               {item.callback_for_accept ? <NotificationAction icon={CheckOutlined} callback_url={item.callback_for_accept} /> : <></>}
               {item.callback_for_decline ? <NotificationAction icon={CloseOutlined} callback_url={item.callback_for_decline} /> : <></>}
-              
             </NotificationActions>
           </NotificationRoot>
         )}
