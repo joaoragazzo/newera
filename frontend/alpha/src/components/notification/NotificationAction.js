@@ -6,8 +6,8 @@ export function NotificationAction( { icon: Icon, callback_url, ...others } ) {
         try {
             const response = await axios.post(callback_url)
             
-            if (response.data.message) {
-                message.success(response.data.message)
+            if (response.data.success) {
+                message.success(response.data.success)
             }
         } catch (error) {
             message.error(error.response.data.error)

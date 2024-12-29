@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from "react";
-import { Typography, Table, Button, Tag, Space, Row, Col, Card, Progress, message, Modal, Form, Input, ColorPicker } from "antd";
+import { Typography, Table, Button, Tag, Space, Row, Col, Card, Progress, message, Modal, Form, Input, ColorPicker, Select } from "antd";
 import axios from "axios";
 import {
   UserOutlined,
@@ -23,16 +23,35 @@ const ClanAdminPage = () => {
 
   const [isCreateModalVisible, setIsCreateModalVisible] = useState(false);
   const [isEditModalVisible, setIsEditModalVisible] = useState(false);
+  const [isInviteModalVisible, setIsInviteModalVisible] = useState(false);
 
   const [createForm] = Form.useForm();
   const [editForm] = Form.useForm();
+  const [inviteForm] = Form.useForm();
 
   const [users, setUsers] = useState([]);
   const [clanName, setClanName] = useState();
   const [clanTag, setClanTag] = useState();
   const [clanColor, setClanColor] = useState();
-  
+  const [playersToInvite, setPlayersToInvite] = useState([]);
+
   const [memberOfAClan, setMemberOfAClan] = useState(false);
+
+  const getPlayers = async () => {
+    try {
+      const response = await axios.get("/api/player/list");
+      const data = response.data;
+
+      const formattedOptions = Object.entries(data).map(([player_id, name]) => ({
+        value: player_id,
+        label: name,
+      }));
+
+      setPlayersToInvite(formattedOptions);
+    } catch (error) {
+      console.error("Erro ao buscar jogadores:", error);
+    }
+  };
 
   const createClan = async (values) => {
     try {
@@ -51,6 +70,16 @@ const ClanAdminPage = () => {
       const response = await axios.post("/api/clan/edit", values);
       setIsEditModalVisible(false);
       await fetchInfo();
+      message.success(response.data.success)
+    } catch (error) {
+      message.error(error.response.data.error)
+    }
+  }
+
+  const inviteClan = async (values) => {
+    try {
+      const response = await axios.post("/api/clan/invite", values);
+      setIsInviteModalVisible(false);
       message.success(response.data.success)
     } catch (error) {
       message.error(error.response.data.error)
@@ -79,6 +108,10 @@ const ClanAdminPage = () => {
     fetchInfo();
   }, []);
 
+  useEffect(() => {
+    getPlayers();
+  }, []);
+
   const showCreateModal = () => {
     setIsCreateModalVisible(true);
   };
@@ -95,6 +128,14 @@ const ClanAdminPage = () => {
     setIsEditModalVisible(false)
   }
 
+  const showInviteModal = () => {
+    setIsInviteModalVisible(true)
+  }
+
+  const closeInviteModal = () => {
+    setIsInviteModalVisible(false)
+  }
+
   const onCreateOk = () => {
     createForm.submit();
   }
@@ -102,6 +143,11 @@ const ClanAdminPage = () => {
   const onEditOk = () => {
     editForm.submit();
   }
+
+  const onInviteOk = () => {
+    inviteForm.submit()
+  }
+
 
   const CreateClanCard = () => {
     return (
@@ -191,6 +237,38 @@ const ClanAdminPage = () => {
     );
   }
 
+  const InviteToClanCard = () => {
+
+    return (
+      <Modal
+        title={`Convidar novos membros para ${clanName}`}
+        open={isInviteModalVisible}
+        onCancel={closeInviteModal}
+        okText="Convidar"
+        cancelText="Cancelar"
+        onOk={onInviteOk}
+      >
+        <Form
+          layout="vertical"
+          id="form-clan"
+          form={inviteForm}
+          onFinish={inviteClan}
+        >
+          <Form.Item label="Jogador" name="invitee_id" rules={[
+            { required: true, message: "Você precisa escolher o jogador a ser convidado." },
+          ]}>
+            <Select optionFilterProp="children" options={playersToInvite}
+              filterOption={(input, option) =>
+                option?.children.toLowerCase().includes(input.toLowerCase())
+              } >
+
+            </Select>
+          </Form.Item>
+        </Form>
+      </Modal >
+    );
+  }
+
   const CreateGraphsCard = () => {
     return (
       <Row gutter={[16, 16]} style={{ marginBottom: "20px" }}>
@@ -236,6 +314,7 @@ const ClanAdminPage = () => {
     return (
       <>
         <EditClanCard />
+        <InviteToClanCard />
         <Card
           title={<Title level={3}>[<span style={{ color: clanColor }}>{clanTag}</span>] {clanName}</Title>}
           extra={
@@ -243,7 +322,7 @@ const ClanAdminPage = () => {
               <Button type="primary" icon={<EditFilled />} style={{ marginRight: "10px" }} onClick={showEditModal}>
                 Editar clan
               </Button>
-              <Button type="primary" icon={<PlusOutlined />}>
+              <Button type="primary" icon={<PlusOutlined />} onClick={showInviteModal} >
                 Convidar novos membros
               </Button>
             </>

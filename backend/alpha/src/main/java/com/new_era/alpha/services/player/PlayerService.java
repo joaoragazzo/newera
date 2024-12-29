@@ -64,4 +64,8 @@ public class PlayerService {
         return player;
     }
 
+    public List<Player> findAll() {
+        return playerRepository.findAll();
+    }
+
 }

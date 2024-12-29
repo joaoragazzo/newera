@@ -8,6 +8,7 @@ import java.util.Map;
 
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -19,10 +20,12 @@ import com.new_era.alpha.entities.clan.Clan;
 import com.new_era.alpha.entities.clan.ClanFiliation;
 import com.new_era.alpha.security.UserSession;
 import com.new_era.alpha.services.clan.ClanFiliationService;
+import com.new_era.alpha.services.clan.ClanInvitationService;
 import com.new_era.alpha.services.clan.ClanManagementService;
 import com.new_era.alpha.services.clan.ClanService;
 import com.new_era.alpha.services.player.PlayerService;
 
+import jakarta.websocket.server.PathParam;
 import lombok.AllArgsConstructor;
 
 @RestController
@@ -33,6 +36,7 @@ public class ClanController {
     ClanService clanService;
     ClanManagementService clanManagementService;
     ClanFiliationService clanFiliationService;
+    ClanInvitationService clanInvitationService;
     PlayerService playerService;
     UserSession session;
 
@@ -109,5 +113,35 @@ public class ClanController {
         return new ResponseEntity<>(response, HttpStatus.OK);
     }
     
+    @PostMapping("/invite")
+    public ResponseEntity<Map<String, String>> invite(@RequestBody Map<String, String> payload) {
+        Integer inviteer_id = session.getPlayer_id();
+        Integer invitee_id = Integer.valueOf(payload.get("invitee_id"));
+        clanInvitationService.invitePlayerToClan(inviteer_id, invitee_id);
+        
+        Map<String, String> response = new HashMap<>();
+        response.put("success", "O jogador foi convidado com sucesso!");
+        
+        return new ResponseEntity<>(response, HttpStatus.OK);
+    }
 
+    @PostMapping("/accept/{id}")
+    public ResponseEntity<Map<String, String>> acceptInvite(@PathVariable("id") Integer id) {
+        Integer player_id = session.getPlayer_id();
+        clanInvitationService.acceptInviteToClan(player_id, id);
+        
+        Map<String, String> response = new HashMap<>();
+        response.put("success", "Você aceitou o convite com sucesso!");
+        return new ResponseEntity<>(response, HttpStatus.OK);
+    }
+
+    @PostMapping("/decline/{id}")
+    public ResponseEntity<Map<String, String>> declineInvite(@PathVariable("id") Integer id) {
+        Integer player_id = session.getPlayer_id();
+        clanInvitationService.declineInviteToClan(player_id, id);
+        
+        Map<String, String> response = new HashMap<>();
+        response.put("success", "Você aceitou o convite com sucesso!");
+        return new ResponseEntity<>(response, HttpStatus.OK);
+    }
 }

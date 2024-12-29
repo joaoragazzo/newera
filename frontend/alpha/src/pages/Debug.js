@@ -11,7 +11,7 @@ const Debug = () => {
 
     const getOptions = async () => {
         try {
-            const response = await axios.get("/api/debug/allplayers");
+            const response = await axios.get("/api/player/list");
             const data = response.data;
 
             const formattedOptions = Object.entries(data).map(([player_id, name]) => ({

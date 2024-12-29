@@ -79,20 +79,6 @@ public class TestingController {
 
     }
 
-    @GetMapping("/allplayers")
-    public ResponseEntity<Map<Integer, String>> getAllPlayers() {
-        List<Player> players = playerRepository.findAll();
-
-        Map<Integer, String> response = new HashMap<>();
-
-        for (Player player : players) {
-            String nick = playerService.getLastNick(player.getId());
-            response.put(player.getId(), nick);
-        }
-
-        return new ResponseEntity<>(response, HttpStatus.OK);
-    }
-
     @PostMapping("/setsteam64id")
     public ResponseEntity<String> setSteam64id(@RequestBody Map<String, String> payload) {
         Integer player_id = Integer.valueOf(payload.get("player"));
