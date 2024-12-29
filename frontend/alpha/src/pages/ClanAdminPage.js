@@ -33,6 +33,8 @@ const ClanAdminPage = () => {
   const [clanName, setClanName] = useState();
   const [clanTag, setClanTag] = useState();
   const [clanColor, setClanColor] = useState();
+  const [clanOwner, setClanOwner] = useState(false);
+  const [clanAdmin, setClanAdmin] = useState(false);
   const [playersToInvite, setPlayersToInvite] = useState([]);
 
   const [memberOfAClan, setMemberOfAClan] = useState(false);
@@ -96,6 +98,12 @@ const ClanAdminPage = () => {
         setClanName(response.data.name);
         setClanTag(response.data.tag);
         setClanColor(response.data.color);
+
+        if (response.data.role == "ADMIN")
+          setClanAdmin(true)
+
+        if (response.data.role == "OWNER")
+          setClanOwner(true)
       }
 
     } catch (error) {
@@ -313,18 +321,44 @@ const ClanAdminPage = () => {
   const CreateMembersListCard = () => {
     return (
       <>
-        <EditClanCard />
-        <InviteToClanCard />
+        {
+          clanOwner ?
+            <EditClanCard />
+            :
+            <></>
+        }
+
+        {
+          clanAdmin || clanOwner ?
+            <InviteToClanCard />
+            :
+            <></>
+
+        }
+
         <Card
           title={<Title level={3}>[<span style={{ color: clanColor }}>{clanTag}</span>] {clanName}</Title>}
           extra={
             <>
-              <Button type="primary" icon={<EditFilled />} style={{ marginRight: "10px" }} onClick={showEditModal}>
-                Editar clan
-              </Button>
-              <Button type="primary" icon={<PlusOutlined />} onClick={showInviteModal} >
-                Convidar novos membros
-              </Button>
+              {
+                clanOwner ?
+                  <Button type="primary" icon={<EditFilled />} style={{ marginRight: "10px" }} onClick={showEditModal}>
+                    Editar clan
+                  </Button>
+                  :
+                  <></>
+              }
+
+              {
+                clanAdmin || clanOwner ?
+                  <Button type="primary" icon={<PlusOutlined />} onClick={showInviteModal} >
+                    Convidar novos membros
+                  </Button>
+                  :
+                  <></>
+
+              }
+
             </>
           }
           bordered={false}

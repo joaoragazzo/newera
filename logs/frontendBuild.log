@@ -3,6 +3,18 @@
 > CI=false react-scripts build
 
 Creating an optimized production build...
+[0;33mOne of your dependencies, babel-preset-react-app, is importing the
+"@babel/plugin-proposal-private-property-in-object" package without
+declaring it in its dependencies. This is currently working because
+"@babel/plugin-proposal-private-property-in-object" is already in your
+node_modules folder for unrelated reasons, but it [1mmay break at any time[0;33m.
+
+babel-preset-react-app is part of the create-react-app project, [1mwhich
+is not maintianed anymore[0;33m. It is thus unlikely that this bug will
+ever be fixed. Add "@babel/plugin-proposal-private-property-in-object" to
+your devDependencies to work around this error. This will make this message
+go away.[0m
+  
 Compiled with warnings.
 
 [eslint] 
@@ -13,6 +25,10 @@ src/components/notification/NotificationRoot.js
   Line 1:35:  'List' is defined but never used      no-unused-vars
   Line 1:41:  'Button' is defined but never used    no-unused-vars
 
+src/pages/ClanAdminPage.js
+  Line 102:32:  Expected '===' and instead saw '=='  eqeqeq
+  Line 105:32:  Expected '===' and instead saw '=='  eqeqeq
+
 src/pages/Debug.js
   Line 3:8:  'FormItem' is defined but never used  no-unused-vars
 
@@ -21,9 +37,9 @@ To ignore, add // eslint-disable-next-line to the line before.
 
 File sizes after gzip:
 
-  402.58 kB  build/static/js/main.3972d0dc.js
-  264 B      build/static/css/main.e6c13ad2.css
-  210 B      build/static/js/624.550f73c3.chunk.js
+  402.63 kB (+49 B)  build/static/js/main.aaceb484.js
+  264 B              build/static/css/main.e6c13ad2.css
+  210 B              build/static/js/624.550f73c3.chunk.js
 
 The project was built assuming it is hosted at /.
 You can control this with the homepage field in your package.json.

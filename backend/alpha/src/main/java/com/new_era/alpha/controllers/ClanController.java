@@ -95,18 +95,19 @@ public class ClanController {
     public ResponseEntity<ClanInfoDTO> info() {
         
         Integer player_id = session.getPlayer_id();
-        Clan clan = clanFiliationService.getPlayerClanByPlayerId(player_id);
+        ClanFiliation filiation = clanFiliationService.getPlayerFilitiationByPlayerId(player_id);
+        Clan clan = filiation.getClan();
         List<ClanFiliation> filiations = clanFiliationService.getAllActiveClanFiliationsByClanId(clan.getId());
         List<ClanMemberDTO> members = new ArrayList<>();
         
-        for(ClanFiliation filiation : filiations) {
-            String nickname = playerService.getLastNick(filiation.getPlayer().getId());
+        for(ClanFiliation generic_filiation : filiations) {
+            String nickname = playerService.getLastNick(generic_filiation.getPlayer().getId());
 
-            ClanMemberDTO member = new ClanMemberDTO(nickname, 0, 0, LocalDateTime.now(), filiation.getRole() );
+            ClanMemberDTO member = new ClanMemberDTO(nickname, 0, 0, LocalDateTime.now(), generic_filiation.getRole() );
             members.add(member);
         }
 
-        ClanInfoDTO response = new ClanInfoDTO(clan.getName(), clan.getTag(), clan.getColor(), members);
+        ClanInfoDTO response = new ClanInfoDTO(clan.getName(), clan.getTag(), clan.getColor(), filiation.getRole(), members);
 
         return new ResponseEntity<>(response, HttpStatus.OK);
     }
