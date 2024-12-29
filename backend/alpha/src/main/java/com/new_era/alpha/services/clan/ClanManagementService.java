@@ -30,6 +30,7 @@ public class ClanManagementService {
         Player player = playerService.getPlayerById(owner_id); 
 
         clanFiliationService.generateNewFiliation(player.getId(), clan.getId());
+        clanFiliationService.promoteToOwner(owner_id);
 
         return clan;
     }

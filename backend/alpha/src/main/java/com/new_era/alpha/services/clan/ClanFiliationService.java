@@ -117,8 +117,6 @@ public class ClanFiliationService {
         return clanFiliationRepository.save(clan_filiation);
     }
 
-    
-
     public boolean checkPlayerInAnyClan(Integer player_id) {
         return clanFiliationRepository.findActiveClanByPlayerId(player_id).isPresent();
     }
@@ -195,6 +193,12 @@ public class ClanFiliationService {
         filiation.setRole(ClanRole.MEMBER);
         return clanFiliationRepository.save(filiation);
         
+    }
+
+    public ClanFiliation promoteToOwner(Integer player_id) {
+        ClanFiliation clanFiliation = getPlayerFilitiationByPlayerId(player_id);
+        clanFiliation.setRole(ClanRole.OWNER);
+        return clanFiliationRepository.save(clanFiliation);
     }
 
     private void bothPlayerAreInTheSameClan(Integer player_1, Integer player_2) {

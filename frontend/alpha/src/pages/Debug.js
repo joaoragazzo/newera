@@ -14,8 +14,8 @@ const Debug = () => {
             const response = await axios.get("/api/debug/allplayers");
             const data = response.data;
 
-            const formattedOptions = Object.entries(data).map(([steam64id, name]) => ({
-                value: steam64id,
+            const formattedOptions = Object.entries(data).map(([player_id, name]) => ({
+                value: player_id,
                 label: name,
             }));
 

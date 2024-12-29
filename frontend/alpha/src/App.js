@@ -1,11 +1,11 @@
 import React, { useState } from "react";
 import { Layout, ConfigProvider, theme } from "antd";
 import { BrowserRouter as Router, Routes, Route, Navigate } from "react-router-dom";
-import ClanAdminPage from "./components/pages/ClanAdminPage";
+import ClanAdminPage from "./pages/ClanAdminPage";
 import CustomHeader from "./components/Header";
 import Sidebar from "./components/Sidebar";
 import '@ant-design/v5-patch-for-react-19';
-import Debug from "./components/pages/Debug";
+import Debug from "./pages/Debug";
 
 const { Content } = Layout;
 
@@ -14,7 +14,7 @@ const checkPermission = (role) => {
   return role === userRole;
 };
 
-const LazyAdmin = React.lazy(() => import("./components/pages/Admin"));
+const LazyAdmin = React.lazy(() => import("./pages/Admin"));
 
 const App = () => {
   const [collapsed, setCollapsed] = useState(false);

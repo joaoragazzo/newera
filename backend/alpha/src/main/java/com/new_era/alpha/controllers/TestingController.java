@@ -19,9 +19,9 @@ import com.new_era.alpha.entities.player.Nick;
 import com.new_era.alpha.entities.player.Player;
 import com.new_era.alpha.repositories.player.NickRepository;
 import com.new_era.alpha.repositories.player.PlayerRepository;
+import com.new_era.alpha.security.UserSession;
 import com.new_era.alpha.services.player.PlayerService;
 
-import jakarta.servlet.http.HttpSession;
 import lombok.AllArgsConstructor;
 
 @RestController
@@ -30,9 +30,9 @@ import lombok.AllArgsConstructor;
 public class TestingController {
 
     private final PlayerService playerService;
-
     private final PlayerRepository playerRepository;
     private final NickRepository nickRepository;
+    private final UserSession session;
 
     @GetMapping("/players")
     public List<Player> getPlayers() {
@@ -80,25 +80,24 @@ public class TestingController {
     }
 
     @GetMapping("/allplayers")
-    public ResponseEntity<Map<BigInteger, String>> getAllPlayers() {
+    public ResponseEntity<Map<Integer, String>> getAllPlayers() {
         List<Player> players = playerRepository.findAll();
 
-        Map<BigInteger, String> response = new HashMap<>();
+        Map<Integer, String> response = new HashMap<>();
 
         for (Player player : players) {
             String nick = playerService.getLastNick(player.getId());
-            response.put(player.getSteam64id(), nick);
+            response.put(player.getId(), nick);
         }
 
         return new ResponseEntity<>(response, HttpStatus.OK);
     }
 
     @PostMapping("/setsteam64id")
-    public ResponseEntity<String> setSteam64id(HttpSession session, @RequestBody Map<String, String> payload) {
-        String player_id = payload.get("player");
-        
-        session.setAttribute("playerid", player_id);
-        return ResponseEntity.ok("OK");
+    public ResponseEntity<String> setSteam64id(@RequestBody Map<String, String> payload) {
+        Integer player_id = Integer.valueOf(payload.get("player"));
+        session.setPlayer_id(player_id);
+        return ResponseEntity.ok("OK session setted to " + session.getPlayer_id());
     } 
 
 }

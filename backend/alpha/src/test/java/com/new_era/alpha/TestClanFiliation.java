@@ -985,6 +985,22 @@ class TestClanFiliation {
     }
 
     @Test
+    @DisplayName("#createClanWithOwner > when user is not in a clan > create clan & user is the owner")
+    void createClanWithOwnerWhenUserIsNotInAClanCreateClanUserIsTheOwner() {
+        Player player1 = create_player();
+        
+        assertAll(
+            () -> assertDoesNotThrow(
+                () -> clanManagementService.createClanWithOwner("test", "tag", "#000000", player1.getId())
+            ),
+            () -> assertEquals(
+                ClanRole.OWNER, 
+                clanFiliationService.getPlayerFilitiationByPlayerId(player1.getId()).getRole()
+            )
+        );
+    }
+
+    @Test
     @DisplayName("#deleteClanWithOwner > when the member is the owner > delete the clan")
     void deleteClanWithOwnerWhenTheMemberIsTheOwnerDeleteTheClan() {
         Player owner = create_player();

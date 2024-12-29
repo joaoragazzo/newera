@@ -17,7 +17,14 @@ src/components/notification/NotificationRoot.js
   Line 1:35:  'List' is defined but never used      no-unused-vars
   Line 1:41:  'Button' is defined but never used    no-unused-vars
 
-src/components/pages/Debug.js
+src/pages/ClanAdminPage.js
+  Line 1:27:  'useEffect' is defined but never used         no-unused-vars
+  Line 2:22:  'Table' is defined but never used             no-unused-vars
+  Line 7:3:   'PlusOutlined' is defined but never used      no-unused-vars
+  Line 10:3:  'EditFilled' is defined but never used        no-unused-vars
+  Line 69:9:  'columns' is assigned a value but never used  no-unused-vars
+
+src/pages/Debug.js
   Line 3:8:  'FormItem' is defined but never used  no-unused-vars
 
 Search for the keywords to learn more about each warning.
@@ -25,9 +32,9 @@ To ignore, add // eslint-disable-next-line to the line before.
 
 File sizes after gzip:
 
-  360.24 kB  build/static/js/main.5bd5c028.js
-  533 B      build/static/css/main.56427bd2.css
-  209 B      build/static/js/473.585780c5.chunk.js
+  344.73 kB  build/static/js/main.c535b3a9.js
+  264 B      build/static/css/main.e6c13ad2.css
+  210 B      build/static/js/624.550f73c3.chunk.js
 
 The project was built assuming it is hosted at /.
 You can control this with the homepage field in your package.json.
