@@ -1163,7 +1163,7 @@ class TestClanFiliation {
         create_clan_filiation(clan, player, ClanRole.OWNER);
         
         assertDoesNotThrow(
-            () -> clanManagementService.changeClanName(player.getId(), clan.getId(), "secondname")
+            () -> clanManagementService.changeClanName(player.getId(), "secondname")
         );
         
         Clan updated_clan = clanService.getClanById(clan.getId());
@@ -1182,7 +1182,7 @@ class TestClanFiliation {
         
         Exception exception = assertThrows(
             IllegalArgumentException.class,
-            () -> clanManagementService.changeClanName(player.getId(), clan.getId(), "secondname")
+            () -> clanManagementService.changeClanName(player.getId(), "secondname")
         );
         
         Clan updated_clan = clanService.getClanById(clan.getId());
@@ -1202,7 +1202,7 @@ class TestClanFiliation {
         create_clan_filiation(clan, player, ClanRole.OWNER);
         
         assertDoesNotThrow(
-            () -> clanManagementService.changeClanTag(player.getId(), clan.getId(), "xxx")
+            () -> clanManagementService.changeClanTag(player.getId(), "xxx")
         );
         
         Clan updated_clan = clanService.getClanById(clan.getId());
@@ -1221,7 +1221,7 @@ class TestClanFiliation {
         
         Exception exception = assertThrows(
             IllegalArgumentException.class,
-            () -> clanManagementService.changeClanTag(player.getId(), clan.getId(), "xxx")
+            () -> clanManagementService.changeClanTag(player.getId(), "xxx")
         );
         
         Clan updated_clan = clanService.getClanById(clan.getId());
@@ -1242,7 +1242,7 @@ class TestClanFiliation {
         
         Exception exception = assertThrows(
             IllegalArgumentException.class,
-            () -> clanManagementService.changeClanTag(player.getId(), clan.getId(), "invalid clan tag")
+            () -> clanManagementService.changeClanTag(player.getId(), "invalid clan tag")
         );
         
         Clan updated_clan = clanService.getClanById(clan.getId());
@@ -1264,7 +1264,7 @@ class TestClanFiliation {
         
         Exception exception = assertThrows(
             IllegalArgumentException.class,
-            () -> clanManagementService.changeClanTag(player.getId(), clan.getId(), "xxxxx")
+            () -> clanManagementService.changeClanTag(player.getId(), "xxxxx")
         );
         
         Clan updated_clan = clanService.getClanById(clan.getId());
@@ -1284,7 +1284,7 @@ class TestClanFiliation {
         create_clan_filiation(clan, player, ClanRole.OWNER);
         
         assertDoesNotThrow(
-            () -> clanManagementService.changeClanColor(player.getId(), clan.getId(), "#ffffff")
+            () -> clanManagementService.changeClanColor(player.getId(), "#ffffff")
         );
         
         Clan updated_clan = clanService.getClanById(clan.getId());
@@ -1303,7 +1303,7 @@ class TestClanFiliation {
         
         Exception exception = assertThrows(
             IllegalArgumentException.class,
-            () -> clanManagementService.changeClanColor(player.getId(), clan.getId(), "#ffffff")
+            () -> clanManagementService.changeClanColor(player.getId(), "#ffffff")
         );
         
         Clan updated_clan = clanService.getClanById(clan.getId());
@@ -1324,7 +1324,7 @@ class TestClanFiliation {
         
         Exception exception = assertThrows(
             IllegalArgumentException.class,
-            () -> clanManagementService.changeClanColor(player.getId(), clan.getId(), "#00000p")
+            () -> clanManagementService.changeClanColor(player.getId(), "#00000p")
         );
         
         Clan updated_clan = clanService.getClanById(clan.getId());
@@ -1346,7 +1346,7 @@ class TestClanFiliation {
         
         Exception exception = assertThrows(
             IllegalArgumentException.class,
-            () -> clanManagementService.changeClanColor(player.getId(), clan.getId(), "#00000p")
+            () -> clanManagementService.changeClanColor(player.getId(), "#00000p")
         );
         
         Clan updated_clan = clanService.getClanById(clan.getId());

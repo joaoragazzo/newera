@@ -51,8 +51,8 @@ public class ClanManagementService {
         }
     }
 
-    public Clan changeClanName(Integer initiator_id, Integer clan_id, String new_name) {
-        Clan clan = clanService.getClanById(clan_id);
+    public Clan changeClanName(Integer initiator_id, String new_name) {
+        Clan clan = clanFiliationService.getPlayerClanByPlayerId(initiator_id);
         ClanFiliation initiator_filiation = clanFiliationService.getPlayerFilitiationByPlayerId(initiator_id);
 
         if (initiator_filiation.getRole() != ClanRole.OWNER)
@@ -61,12 +61,12 @@ public class ClanManagementService {
         if (clan.getId() != initiator_filiation.getClan().getId()) 
             throw new IllegalArgumentException(ErrorMessages.PLAYERS_ARE_NOT_IN_SAME_CLAN);
 
-        return clanService.changeName(clan_id, new_name);
+        return clanService.forcedChangeName(clan.getId(), new_name);
         
     } 
 
-    public Clan changeClanTag(Integer initiator_id, Integer clan_id, String new_tag) {
-        Clan clan = clanService.getClanById(clan_id);
+    public Clan changeClanTag(Integer initiator_id, String new_tag) {
+        Clan clan = clanFiliationService.getPlayerClanByPlayerId(initiator_id);
         ClanFiliation initiator_filiation = clanFiliationService.getPlayerFilitiationByPlayerId(initiator_id);
 
         if (initiator_filiation.getRole() != ClanRole.OWNER)
@@ -75,12 +75,12 @@ public class ClanManagementService {
         if (clan.getId() != initiator_filiation.getClan().getId()) 
             throw new IllegalArgumentException(ErrorMessages.PLAYERS_ARE_NOT_IN_SAME_CLAN);
 
-        return clanService.changeTag(clan_id, new_tag);
+        return clanService.forcedChangeTag(clan.getId(), new_tag);
         
     }
 
-    public Clan changeClanColor(Integer initiator_id, Integer clan_id, String new_color) {
-        Clan clan = clanService.getClanById(clan_id);
+    public Clan changeClanColor(Integer initiator_id, String new_color) {
+        Clan clan = clanFiliationService.getPlayerClanByPlayerId(initiator_id);
         ClanFiliation initiator_filiation = clanFiliationService.getPlayerFilitiationByPlayerId(initiator_id);
 
         if (initiator_filiation.getRole() != ClanRole.OWNER)
@@ -89,7 +89,7 @@ public class ClanManagementService {
         if (clan.getId() != initiator_filiation.getClan().getId()) 
             throw new IllegalArgumentException(ErrorMessages.PLAYERS_ARE_NOT_IN_SAME_CLAN);
 
-        return clanService.changeColor(clan_id, new_color);
+        return clanService.forcedChangeColor(clan.getId(), new_color);
         
     }
 }

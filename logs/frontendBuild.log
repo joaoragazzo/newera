@@ -21,7 +21,7 @@ To ignore, add // eslint-disable-next-line to the line before.
 
 File sizes after gzip:
 
-  402.57 kB  build/static/js/main.2f99c826.js
+  402.58 kB  build/static/js/main.3972d0dc.js
   264 B      build/static/css/main.e6c13ad2.css
   210 B      build/static/js/624.550f73c3.chunk.js
 

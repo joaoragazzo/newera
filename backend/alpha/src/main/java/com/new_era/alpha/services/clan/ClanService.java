@@ -40,7 +40,7 @@ public class ClanService {
         return clanRepository.save(clan);
     }
 
-    public Clan changeTag(Integer clan_id, String tag) {
+    public Clan forcedChangeTag(Integer clan_id, String tag) {
         if (tag.length() < 2 || tag.length() > 4)
             throw new IllegalArgumentException(ErrorMessages.INVALID_CLAN_TAG);
 
@@ -49,13 +49,13 @@ public class ClanService {
         return clanRepository.save(clan);
     }
 
-    public Clan changeName(Integer clan_id, String name) {
+    public Clan forcedChangeName(Integer clan_id, String name) {
         Clan clan = getClanById(clan_id);
         clan.setName(name);
         return clanRepository.save(clan);
     }
 
-    public Clan changeColor(Integer clan_id, String color) {
+    public Clan forcedChangeColor(Integer clan_id, String color) {
         if (!HexColorValidator.isValidHexColor(color)) 
             throw new IllegalArgumentException(ErrorMessages.INVALID_CLAN_COLOR);
         

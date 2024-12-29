@@ -77,13 +77,12 @@ public class ClanController {
     @PostMapping("/edit")
     public ResponseEntity<Map<String, String>> edit(@RequestBody Map<String, String> payload) {
         Integer player_id = session.getPlayer_id();
-        Clan clan = clanFiliationService.getPlayerClanByPlayerId(player_id);
         String color = payload.get("color");
         String tag = payload.get("tag");
         String name = payload.get("name");
-        clanService.changeColor(clan.getId(), color);
-        clanService.changeTag(clan.getId(), tag);
-        clanService.changeName(clan.getId(), name);
+        clanManagementService.changeClanColor(player_id, color);
+        clanManagementService.changeClanTag(player_id, tag);
+        clanManagementService.changeClanName(player_id, name);
 
         Map<String, String> response = new HashMap<>();
 
