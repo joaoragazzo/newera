@@ -23,8 +23,33 @@ const ClanAdminPage = () => {
 
   const [form] = Form.useForm();
   const [users, setUsers] = useState([]);
+  const [clanName, setClanName] = useState();
+  const [clanTag, setClanTag] = useState();
+  const [clanColor, setClanColor] = useState();
   const [isModalVisible, setIsModalVisible] = useState(false);
   const [memberOfAClan, setMemberOfAClan] = useState(false);
+
+  const fetchInfo = async () => {
+    try {
+      const response = await axios.post("/api/clan/info")
+
+      if (response.data) {
+        setMemberOfAClan(true);
+        setUsers(response.data.members);
+        setClanName(response.data.name);
+        setClanTag(response.data.tag);
+        setClanColor(response.data.color);
+      }
+
+    } catch (error) {
+
+    }
+
+  }
+
+  useEffect(() => {
+    fetchInfo();
+  }, []);
 
   const showModal = () => {
     setIsModalVisible(true);
@@ -33,12 +58,13 @@ const ClanAdminPage = () => {
   const closeModal = () => {
     setIsModalVisible(false);
   }
- 
+
   const createClan = async (values) => {
     try {
       const response = await axios.post("/api/clan/create", values);
       setIsModalVisible(false);
       setMemberOfAClan(true);
+      await fetchInfo();
       message.success(response.data.success)
     } catch (error) {
       message.error(error.response.data.error)
@@ -135,7 +161,7 @@ const ClanAdminPage = () => {
   const CreateMembersListCard = () => {
     return (
       <Card
-        title="Administração do clan"
+        title={<Title level={3}>[<span style={{ color: clanColor }}>{clanTag}</span>] {clanName}</Title>}
         extra={
           <>
             <Button type="primary" icon={<EditFilled />} style={{ marginRight: "10px" }}>
@@ -156,16 +182,16 @@ const ClanAdminPage = () => {
           columns={columns}
           pagination={{ pageSize: 5 }}
         />
-      </Card> 
+      </Card>
     );
   }
 
   const columns = [
-    { title: <>< UserOutlined /> Nome </>, dataIndex: "name", key: "name" },
+    { title: <>< UserOutlined /> Nome </>, dataIndex: "nick", key: "nick" },
     {
       title: <>< StarFilled /> Cargo </>,
-      dataIndex: "rank",
-      key: "rank",
+      dataIndex: "role",
+      key: "role",
       render: (text) => (
         <Tag color={text === "Dono" ? "red" : text === "Admin" ? "gold" : "green"}>
           {text}
@@ -189,8 +215,8 @@ const ClanAdminPage = () => {
     },
     {
       title: "Visto por último",
-      dataIndex: "lastSeenAt",
-      key: "lastSeenAt",
+      dataIndex: "last_seen_at",
+      key: "last_seen_at",
       render: (date) => {
         return format(new Date(date), "dd 'de' MMMM 'de' yyyy', às' HH:mm", { locale: ptBR });
       },
@@ -204,7 +230,7 @@ const ClanAdminPage = () => {
           {
             record.rank === "Membro" ?
               (
-                <Button icon={<ArrowUpOutlined />} onClick={() => promotePlayer(record.id)}>
+                <Button icon={<ArrowUpOutlined />}>
                   Promover
                 </Button>
               )
