@@ -25,7 +25,6 @@ import com.new_era.alpha.services.clan.ClanManagementService;
 import com.new_era.alpha.services.clan.ClanService;
 import com.new_era.alpha.services.player.PlayerService;
 
-import jakarta.websocket.server.PathParam;
 import lombok.AllArgsConstructor;
 
 @RestController
@@ -102,7 +101,7 @@ public class ClanController {
         List<ClanMemberDTO> members = new ArrayList<>();
         
         for(ClanFiliation filiation : filiations) {
-            String nickname = playerService.getLastNick(player_id);
+            String nickname = playerService.getLastNick(filiation.getPlayer().getId());
 
             ClanMemberDTO member = new ClanMemberDTO(nickname, 0, 0, LocalDateTime.now(), filiation.getRole() );
             members.add(member);
