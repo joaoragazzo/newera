@@ -13,6 +13,29 @@ const { Header } = Layout;
 const CustomHeader = () => {
   const [notifications, setNotifications] = useState([]);
 
+  useEffect(() => {
+    const eventSource = new EventSource("/api//notification/stream");
+
+    eventSource.onmessage = (event) => {
+      const newNotification = JSON.parse(event.data);
+      if (newNotification.title !== "Ping") {
+        setNotifications(
+          (prev) => [newNotification, ...prev]
+        );
+      }
+    };
+
+    eventSource.onerror = () => {
+      message.error("Erro ao conectar ao servidor de notificações.");
+      eventSource.close();
+    };
+
+    return () => {
+      eventSource.close();
+    };
+  }, []);
+
+
   const fetchNotifications = async () => {
     try {
       const response = await axios.post("/api/notification/list");

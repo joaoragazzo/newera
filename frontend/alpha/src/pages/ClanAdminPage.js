@@ -90,18 +90,19 @@ const ClanAdminPage = () => {
   const fetchInfo = async () => {
     try {
       const response = await axios.post("/api/clan/info")
-
+      const data = response.data
       if (response.data) {
         setMemberOfAClan(true);
-        setUsers(response.data.members);
-        setClanName(response.data.name);
-        setClanTag(response.data.tag);
-        setClanColor(response.data.color);
 
-        if (response.data.role == "ADMIN")
+        setUsers(data.members);
+        setClanName(data.name);
+        setClanTag(data.tag);
+        setClanColor(data.color);
+
+        if (data.role == "ADMIN")
           setClanAdmin(true)
 
-        if (response.data.role == "OWNER")
+        if (data.role == "OWNER")
           setClanOwner(true)
       }
 
@@ -352,7 +353,7 @@ const ClanAdminPage = () => {
     );
   }
 
-  const columns = [
+  const columns = React.useMemo(() => [
     { title: <>< UserOutlined /> Nome </>, dataIndex: "nick", key: "nick" },
     {
       title: <>< StarFilled /> Cargo </>,
@@ -387,42 +388,44 @@ const ClanAdminPage = () => {
         return format(new Date(date), "dd 'de' MMMM 'de' yyyy', às' HH:mm", { locale: ptBR });
       },
     },
-    {
-      title: "Ações",
-      key: "actions",
-      align: "right",
-      render: (_, record) => (
-        <Space>
-          {
-            record.rank === "Membro" ?
-              (
-                <Button icon={<ArrowUpOutlined />}>
-                  Promover
-                </Button>
-              )
-              : null
-          }
-          {
-            record.rank === "Admin" ?
-              (
-                <Button icon={<ArrowDownOutlined />}>
-                  Rebaixar
-                </Button>
-              )
-              : null
-          }
-          {
-            record.rank === "Membro" || record.rank === "Admin" ?
-              (
-                <Button danger>Expulsar</Button>
-              )
-              : null
-          }
+    ...(clanOwner ? [
+      {
+        title: "Ações",
+        key: "actions",
+        align: "right",
+        render: (_, record) => (
+          <Space>
+            {
+              record.role === "MEMBER" ?
+                (
+                  <Button icon={<ArrowUpOutlined />}>
+                    Promover
+                  </Button>
+                )
+                : null
+            }
+            {
+              record.role === "ADMIN" ?
+                (
+                  <Button icon={<ArrowDownOutlined />}>
+                    Rebaixar
+                  </Button>
+                )
+                : null
+            }
+            {
+              record.role === "MEMBER" || record.role === "ADMIN" ?
+                (
+                  <Button danger>Expulsar</Button>
+                )
+                : null
+            }
 
-        </Space>
-      ),
-    },
-  ];
+          </Space>
+        ),
+      }] : [])
+
+  ], [clanOwner]);
 
   return (
     <div>

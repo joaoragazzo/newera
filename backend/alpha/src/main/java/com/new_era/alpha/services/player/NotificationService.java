@@ -3,10 +3,12 @@ package com.new_era.alpha.services.player;
 import java.time.LocalDateTime;
 import java.util.List;
 
+import org.springframework.context.ApplicationEventPublisher;
 import org.springframework.stereotype.Service;
 
 import com.new_era.alpha.entities.player.Notification;
 import com.new_era.alpha.entities.player.Player;
+import com.new_era.alpha.events.model.NotificationCreatedEvent;
 import com.new_era.alpha.repositories.player.NotificationRepository;
 import com.new_era.alpha.services.dto.ClanInvitationNotificationDTO;
 import com.new_era.alpha.services.dto.ClanKikedDTO;
@@ -21,6 +23,7 @@ public class NotificationService {
     
     private final NotificationRepository notificationRepository;
     private final PlayerService playerService;
+    private final ApplicationEventPublisher eventPublisher;
     
     public List<Notification> getAllNotificationsByPlayerId(Integer player_id) {
         return notificationRepository.findNotSeenNotificationByPlayerId(player_id);
@@ -33,6 +36,8 @@ public class NotificationService {
 
         Notification notification = buildNotification(notification_dto); 
         notification.setPlayer(player);
+
+        eventPublisher.publishEvent(new NotificationCreatedEvent(this, notification));
 
         notificationRepository.save(notification);
     }

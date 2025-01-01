@@ -8,15 +8,24 @@ import {
   QuestionCircleFilled,
   ShopOutlined,
   ShoppingCartOutlined,
-  ShoppingFilled
+  ShoppingFilled,
+  BugFilled
 
 } from "@ant-design/icons";
 import { Typography } from 'antd';
+import { useNavigate, useLocation } from "react-router-dom";
 
 const { Title } = Typography;
 const { Sider } = Layout;
 
 const Sidebar = ({ collapsed, onCollapse }) => {
+  const navigate = useNavigate();
+  const location = useLocation();
+
+  const handleMenuClick = (item) => {
+    navigate(item.key); 
+  };
+
   return (
     <Sider
       collapsible
@@ -39,23 +48,15 @@ const Sidebar = ({ collapsed, onCollapse }) => {
         )}
       </div>
       <Menu
-        defaultSelectedKeys={["1"]}
+        defaultSelectedKeys={[location.pathname]}
+        onClick={handleMenuClick}
         mode="inline"
         theme="dark"
         items={[
           {
             key: "1", label: "Servidor", children: [
               { key: "1-1", label: "Status do servidor" },
-              { key: "1-2", label: "Regras", children: [
-                { key: "1-2-1", label: "Gerais" },
-                { key: "1-2-2", label: "PVP" },
-                { key: "1-2-3", label: "Construção" },
-                { key: "1-2-4", label: "Raid" },
-                { key: "1-2-5", label: "Eventos" },
-                { key: "1-2-6", label: "Administração" },
-                { key: "1-2-7", label: "Denúncias" },
-                { key: "1-2-8", label: "Compras e doações" }
-              ]},
+              { key: "1-2", label: "Regras"},
               { key: "1-3", label: "Equipe da administração" } 
             ]
           },
@@ -72,10 +73,11 @@ const Sidebar = ({ collapsed, onCollapse }) => {
               { key: "3-3", label: "Benefícios" }
             ]
           },
-          { key: "4", icon: <TeamOutlined />, label: "Clan" },
+          { key: "/clan", icon: <TeamOutlined />, label: "Clan" },
           { key: "5", icon: <UserOutlined />, label: "Conta" },
           { key: "6", icon: <QuestionCircleFilled />, label: "Suporte" },
           { key: "7", icon: <SettingOutlined />, label: "Configurações" },
+          { key: "/debug", icon: <BugFilled />, label: "Debug" }
         ]}
       />
     </Sider>
