@@ -45,18 +45,19 @@ const Debug = () => {
         getPlayer();
     }, [])
 
-    const onFinish = (values) => {
+    const onFinish = async (values) => {
         try {
-            axios.post("/api/debug/setsteam64id", values)
-            getPlayer()
+            await axios.post("/api/debug/setsteam64id", values)
+            await getPlayer()
         } catch (error) {
             message.error(error.response.data.error)
         }
     };
 
-    const createDefaultDb = () => {
+    const createDefaultDb = async () => {
         try {
-            axios.get("/api/debug/defaultdb")
+            await axios.get("/api/debug/defaultdb")
+            await getOptions();
         } catch (error) {
             message.error(error.response.data.error)
         }
@@ -67,7 +68,7 @@ const Debug = () => {
             <Row gutter={18} style={{ marginBottom: "20px" }}>
                 <Col flex={1}>
                     <Card title="Criar banco de dados">
-                        <Button type="primary" size="large" disabled={options && options.length > 0} onClick={createDefaultDb}>Criar valores de testes</Button>
+                        <Button type="primary" size="large" disabled={options.length > 0} onClick={createDefaultDb}>Criar valores de testes</Button>
                     </Card>
                 </Col>
 
