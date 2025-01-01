@@ -50,6 +50,16 @@ public class TestingController {
         return playerService.createNewNick(player_id, nickname);
     }
 
+    @PostMapping("/session")
+    public ResponseEntity<Map<String, String>> getCurrentSession() {
+        String player_name = playerService.getLastNick(session.getPlayer_id());
+        
+        Map<String, String> response = new HashMap<>();
+        response.put("player", player_name);
+
+        return new ResponseEntity<>(response, HttpStatus.OK);
+    }
+
     @GetMapping("/defaultdb")
     public ResponseEntity<Map<String, String>> defaultdb() {
         Map<String, String> response = new HashMap<>();

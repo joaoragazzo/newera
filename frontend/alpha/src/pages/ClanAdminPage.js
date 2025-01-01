@@ -341,10 +341,6 @@ const ClanAdminPage = () => {
               {(clanAdmin || clanOwner) && <InviteClanButton showInviteModal={showInviteModal} />}
             </>
           }
-          bordered={false}
-          style={{
-            borderRadius: "8px",
-          }}
         >
           <Table
             dataSource={users.map((user) => ({ ...user, key: user.id }))}
