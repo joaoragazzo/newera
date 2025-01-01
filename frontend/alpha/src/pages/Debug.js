@@ -11,7 +11,7 @@ const Debug = () => {
 
     const getPlayer = async () => {
         try {
-            const response = await axios.get("/api/debug/session")
+            const response = await axios.post("/api/debug/session")
             const data = response.data
 
             setPlayer(data.player);
