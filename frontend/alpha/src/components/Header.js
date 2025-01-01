@@ -43,8 +43,8 @@ const CustomHeader = () => {
             <NotificationIcon icon={RocketFilled}/>
             <NotificationContent title={item.title} description={item.message} />
             <NotificationActions>
-              {item.callback_for_accept ? <NotificationAction icon={CheckOutlined} callback_url={item.callback_for_accept} /> : <></>}
-              {item.callback_for_decline ? <NotificationAction icon={CloseOutlined} callback_url={item.callback_for_decline} /> : <></>}
+              {item.callback_for_accept && <NotificationAction icon={CheckOutlined} callback_url={item.callback_for_accept} />}
+              {item.callback_for_decline && <NotificationAction icon={CloseOutlined} callback_url={item.callback_for_decline} />}
             </NotificationActions>
           </NotificationRoot>
         )}

@@ -1,23 +1,22 @@
 import React, { useState, useEffect } from "react";
-import { Typography, Table, Button, Tag, Space, Row, Col, Card, Progress, message, Modal, Form, Input, ColorPicker, Select } from "antd";
+import { Typography, Table, Button, Tag, Space, Row, Col, Card, Progress, Tooltip, message, Modal, Form, Input, ColorPicker, Select } from "antd";
 import axios from "axios";
 import {
   UserOutlined,
   StarFilled,
-  PlusOutlined,
   ArrowUpOutlined,
   ArrowDownOutlined,
-  EditFilled,
-  FileAddFilled
+  FileAddFilled,
+  QuestionCircleOutlined
 } from "@ant-design/icons";
 import { format } from "date-fns";
 import { ptBR } from "date-fns/locale";
 import '@ant-design/v5-patch-for-react-19';
 import FormItem from "antd/es/form/FormItem";
+import EditClanButton from "../components/clan/EditClanButton";
+import InviteClanButton from "../components/clan/InviteClanButton";
 
 const { Title, Paragraph } = Typography;
-
-
 
 const ClanAdminPage = () => {
 
@@ -156,7 +155,6 @@ const ClanAdminPage = () => {
     inviteForm.submit()
   }
 
-
   const CreateClanCard = () => {
     return (
       <>
@@ -190,10 +188,9 @@ const ClanAdminPage = () => {
           </Form>
         </Modal>
 
-        <Card style={{ textAlign: "center" }}>
+        <Card style={{ textAlign: "center" }} >
           <Title level={2}>Você não pertence a nenhum clan atualmente!</Title>
-          <Paragraph>Você pode criar um clan em poucos segundos ao clicar no botão abaixo</Paragraph>
-          <Button icon={<FileAddFilled />} type="primary" style={{ width: "45%" }} onClick={showCreateModal} > Criar um novo clan agora </Button>
+          <Button size="large" icon={<FileAddFilled />} type="primary" style={{ width: "45%" }} onClick={showCreateModal} > Criar um novo clan agora </Button>
         </Card>
       </>
     );
@@ -282,19 +279,27 @@ const ClanAdminPage = () => {
       <Row gutter={[16, 16]} style={{ marginBottom: "20px" }}>
         <Col span={8}>
           <Card
-            title="Online Members"
-            bordered={false}
+            title={<>
+              Membros ativos
+              <Tooltip title="Este card exibe os membros que estão ativos no momento.">
+                <QuestionCircleOutlined style={{ marginLeft: "10px" }} />
+              </Tooltip>
+            </>}
             style={{
               borderRadius: "8px",
             }}
           >
-            <Progress type="circle" percent={75} />
+            <Progress type="circle" percent={0} />
           </Card>
         </Col>
         <Col span={8}>
           <Card
-            title="Total Members"
-            bordered={false}
+            title={<>
+              Tamanho do clan
+              <Tooltip title="Este card exibe a quantidade de usuários no clan.">
+                <QuestionCircleOutlined style={{ marginLeft: "10px" }} />
+              </Tooltip>
+            </>}
             style={{
               borderRadius: "8px",
             }}
@@ -304,14 +309,18 @@ const ClanAdminPage = () => {
         </Col>
         <Col span={8}>
           <Card
-            title="Activity Rate"
-            bordered={false}
+            title={<>
+              Taxa de atividade
+              <Tooltip title="Esse card exibe a atividade do clan. A atividade é mesurada a dividindo a somatória do tempo online total do clan com o tempo total.">
+                <QuestionCircleOutlined style={{ marginLeft: "10px" }} />
+              </Tooltip>
+            </>}
             style={{
               borderRadius: "8px",
               boxShadow: "0 2px 8px rgba(0, 0, 0, 0.2)",
             }}
           >
-            <Progress type="circle" percent={60} />
+            <Progress type="circle" percent={0} />
           </Card>
         </Col>
       </Row>
@@ -321,44 +330,15 @@ const ClanAdminPage = () => {
   const CreateMembersListCard = () => {
     return (
       <>
-        {
-          clanOwner ?
-            <EditClanCard />
-            :
-            <></>
-        }
-
-        {
-          clanAdmin || clanOwner ?
-            <InviteToClanCard />
-            :
-            <></>
-
-        }
+        {clanOwner && <EditClanCard />}
+        {(clanAdmin || clanOwner) && <InviteToClanCard />}
 
         <Card
           title={<Title level={3}>[<span style={{ color: clanColor }}>{clanTag}</span>] {clanName}</Title>}
           extra={
             <>
-              {
-                clanOwner ?
-                  <Button type="primary" icon={<EditFilled />} style={{ marginRight: "10px" }} onClick={showEditModal}>
-                    Editar clan
-                  </Button>
-                  :
-                  <></>
-              }
-
-              {
-                clanAdmin || clanOwner ?
-                  <Button type="primary" icon={<PlusOutlined />} onClick={showInviteModal} >
-                    Convidar novos membros
-                  </Button>
-                  :
-                  <></>
-
-              }
-
+              {clanOwner && <EditClanButton showEditModal={showEditModal} />}
+              {(clanAdmin || clanOwner) && <InviteClanButton showInviteModal={showInviteModal} />}
             </>
           }
           bordered={false}

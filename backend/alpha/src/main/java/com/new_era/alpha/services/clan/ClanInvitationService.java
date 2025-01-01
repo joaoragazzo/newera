@@ -81,7 +81,7 @@ public class ClanInvitationService {
             throw new IllegalArgumentException(ErrorMessages.INVITE_IS_ALREADY_ACCEPTED);
 
         if (invitation.getDeclined())
-            throw new IllegalArgumentException(ErrorMessages.INVITE_IS_ALREADY_ACCEPTED);
+            throw new IllegalArgumentException(ErrorMessages.INVITE_IS_ALREADY_DECLINED);
 
         if (clan.isClosed())
             throw new IllegalArgumentException(ErrorMessages.CLAN_HAS_BEEN_ALREADY_DELETED); 
@@ -98,9 +98,23 @@ public class ClanInvitationService {
         Player player = playerService.getPlayerById(player_id);
 
         ClanInvitation invitation = getInvitateById(invite_id);
+        Clan clan = invitation.getClan();
+        LocalDateTime now = LocalDateTime.now();
 
-        if (invitation.getPlayer().getId() != player.getId())
+        if (!Objects.equals(player, invitation.getPlayer()))
             throw new IllegalArgumentException(ErrorMessages.INVITE_IS_NOT_TO_THIS_PLAYER);
+        
+        if (now.isAfter(invitation.getExpire_at()))
+            throw new IllegalArgumentException(ErrorMessages.INVITE_IS_ALREADY_EXPIRED);
+
+        if (invitation.getAccepted())
+            throw new IllegalArgumentException(ErrorMessages.INVITE_IS_ALREADY_ACCEPTED);
+
+        if (invitation.getDeclined())
+            throw new IllegalArgumentException(ErrorMessages.INVITE_IS_ALREADY_DECLINED);
+
+        if (clan.isClosed())
+            throw new IllegalArgumentException(ErrorMessages.CLAN_HAS_BEEN_ALREADY_DELETED); 
         
         invitation.setDeclined(true);
         invitation.setDeclined_at(LocalDateTime.now());

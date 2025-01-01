@@ -22,11 +22,18 @@ const App = () => {
   return (
     <ConfigProvider theme={{ 
       algorithm: theme.darkAlgorithm,
-      // components: {
-      //   Layout: {
-      //     siderBg: "#141414"
-      //   }
-      // }
+       components: {
+         Layout: {
+           siderBg: "#141414",
+           headerBg: "#141414",
+           triggerBg: "#0f0f0f",
+           bodyBg: "#0c0c0c"
+         },
+         Menu: {
+          darkItemBg: "#141414",
+          darkSubMenuItemBg: "#0f0f0f"
+         }
+      }
     }}>
       <Layout style={{ minHeight: "100vh" }}>
         <Sidebar
@@ -34,7 +41,8 @@ const App = () => {
           onCollapse={(value) => setCollapsed(value)}
         />
         <Layout>
-          <CustomHeader/>
+      <CustomHeader/>
+                   
           <Content
             style={{
               margin: "16px",

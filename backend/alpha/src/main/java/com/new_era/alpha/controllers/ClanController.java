@@ -140,7 +140,7 @@ public class ClanController {
         clanInvitationService.declineInviteToClan(player_id, id);
         
         Map<String, String> response = new HashMap<>();
-        response.put("success", "Você aceitou o convite com sucesso!");
+        response.put("success", "Você recusou o convite com sucesso!");
         return new ResponseEntity<>(response, HttpStatus.OK);
     }
 }

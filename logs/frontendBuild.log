@@ -26,8 +26,9 @@ src/components/notification/NotificationRoot.js
   Line 1:41:  'Button' is defined but never used    no-unused-vars
 
 src/pages/ClanAdminPage.js
-  Line 102:32:  Expected '===' and instead saw '=='  eqeqeq
-  Line 105:32:  Expected '===' and instead saw '=='  eqeqeq
+  Line 19:16:   'Paragraph' is assigned a value but never used  no-unused-vars
+  Line 101:32:  Expected '===' and instead saw '=='             eqeqeq
+  Line 104:32:  Expected '===' and instead saw '=='             eqeqeq
 
 src/pages/Debug.js
   Line 3:8:  'FormItem' is defined but never used  no-unused-vars
@@ -37,7 +38,7 @@ To ignore, add // eslint-disable-next-line to the line before.
 
 File sizes after gzip:
 
-  402.63 kB (+49 B)  build/static/js/main.aaceb484.js
+  402.84 kB (+90 B)  build/static/js/main.45643a8e.js
   264 B              build/static/css/main.e6c13ad2.css
   210 B              build/static/js/624.550f73c3.chunk.js
 
