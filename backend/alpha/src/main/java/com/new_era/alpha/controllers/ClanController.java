@@ -18,6 +18,7 @@ import com.new_era.alpha.controllers.dto.ClanInfoDTO;
 import com.new_era.alpha.controllers.dto.ClanMemberDTO;
 import com.new_era.alpha.entities.clan.Clan;
 import com.new_era.alpha.entities.clan.ClanFiliation;
+import com.new_era.alpha.entities.player.Player;
 import com.new_era.alpha.security.UserSession;
 import com.new_era.alpha.services.clan.ClanFiliationService;
 import com.new_era.alpha.services.clan.ClanInvitationService;
@@ -101,9 +102,10 @@ public class ClanController {
         List<ClanMemberDTO> members = new ArrayList<>();
         
         for(ClanFiliation generic_filiation : filiations) {
-            String nickname = playerService.getLastNick(generic_filiation.getPlayer().getId());
+            Player player = generic_filiation.getPlayer();
+            String nickname = playerService.getLastNick(player.getId());
 
-            ClanMemberDTO member = new ClanMemberDTO(nickname, 0, 0, LocalDateTime.now(), generic_filiation.getRole() );
+            ClanMemberDTO member = new ClanMemberDTO(player.getId(), nickname, 0, 0, LocalDateTime.now(), generic_filiation.getRole() );
             members.add(member);
         }
 
@@ -143,4 +145,35 @@ public class ClanController {
         response.put("success", "Você recusou o convite com sucesso!");
         return new ResponseEntity<>(response, HttpStatus.OK);
     }
+
+    @PostMapping("/kick/{player_id}")
+    public ResponseEntity<Map<String, String>> kickPlayer(@PathVariable("player_id") Integer target_id) {
+        Integer initiator_id = session.getPlayer_id();
+        clanFiliationService.kickPlayerFromClan(initiator_id, target_id);
+
+        Map<String, String> response = new HashMap<>();
+        response.put("success", "Expulsão concluída com sucesso!");
+        return new ResponseEntity<>(response, HttpStatus.OK);
+    }
+
+    @PostMapping("/promote/{player_id}")
+    public ResponseEntity<Map<String, String>> promotePlayer(@PathVariable("player_id") Integer target_id) {
+        Integer initiator_id = session.getPlayer_id();
+        clanFiliationService.promotePlayer(initiator_id, target_id);
+
+        Map<String, String> response = new HashMap<>();
+        response.put("success", "Promoção concluída com sucesso!");
+        return new ResponseEntity<>(response, HttpStatus.OK);
+    }
+
+    @PostMapping("/demote/{player_id}")
+    public ResponseEntity<Map<String, String>> demotePlayer(@PathVariable("player_id") Integer target_id) {
+        Integer initiator_id = session.getPlayer_id();
+        clanFiliationService.demotePlayer(initiator_id, target_id);
+
+        Map<String, String> response = new HashMap<>();
+        response.put("success", "Rebaixamento concluído com sucesso!");
+        return new ResponseEntity<>(response, HttpStatus.OK);
+    }
+
 }

@@ -112,6 +112,39 @@ const ClanAdminPage = () => {
 
   }
 
+  const promoteMember = async (player_id) => {
+    try {
+      const response = await axios.post("/api/clan/promote/" + player_id)
+      const data = response.data 
+      message.success(data.success)
+      fetchInfo()
+    } catch (error) {
+      message.error(error.response.data.error)
+    }
+  }
+
+  const demoteMember = async (player_id) => {
+    try {
+      const response = await axios.post("/api/clan/demote/" + player_id)
+      const data = response.data 
+      message.success(data.success)
+      fetchInfo()
+    } catch (error) {
+      message.error(error.response.data.error)
+    }
+  }
+
+  const kickMember = async (player_id) => {
+    try {
+      const response = await axios.post("/api/clan/kick/" + player_id)
+      const data = response.data 
+      message.success(data.success)
+      fetchInfo()
+    } catch (error) {
+      message.error(error.response.data.error)
+    }
+  }
+
   useEffect(() => {
     fetchInfo();
   }, []);
@@ -398,7 +431,7 @@ const ClanAdminPage = () => {
             {
               record.role === "MEMBER" ?
                 (
-                  <Button icon={<ArrowUpOutlined />}>
+                  <Button icon={<ArrowUpOutlined />} onClick={() => promoteMember(record.id)}>
                     Promover
                   </Button>
                 )
@@ -407,7 +440,7 @@ const ClanAdminPage = () => {
             {
               record.role === "ADMIN" ?
                 (
-                  <Button icon={<ArrowDownOutlined />}>
+                  <Button icon={<ArrowDownOutlined />} onClick={() => demoteMember(record.id)}>
                     Rebaixar
                   </Button>
                 )
@@ -416,7 +449,7 @@ const ClanAdminPage = () => {
             {
               record.role === "MEMBER" || record.role === "ADMIN" ?
                 (
-                  <Button danger>Expulsar</Button>
+                  <Button danger onClick={() => kickMember(record.id)}>Expulsar</Button>
                 )
                 : null
             }
