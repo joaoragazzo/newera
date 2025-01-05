@@ -3,7 +3,7 @@ package com.new_era.alpha.services.utils;
 import com.new_era.alpha.services.dto.ClanInvitationNotificationDTO;
 import com.new_era.alpha.services.dto.ClanKikedDTO;
 import com.new_era.alpha.services.dto.NotificationDTO;
-import com.new_era.alpha.services.messages.player.NotificationMessages;
+import com.new_era.alpha.services.messages.NotificationMessages;
 
 public class NotificationFactory {
     

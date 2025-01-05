@@ -1,5 +1,22 @@
 import React, { useState, useEffect } from "react";
-import { Typography, Table, Button, Tag, Space, Row, Col, Card, Progress, Tooltip, message, Modal, Form, Input, ColorPicker, Select } from "antd";
+import { Typography, 
+  Table, 
+  Button, 
+  Tag, 
+  Space, 
+  Row, 
+  Col, 
+  Card, 
+  Progress, 
+  Tooltip, 
+  message, 
+  Modal, 
+  Form, 
+  Input, 
+  ColorPicker, 
+  Select, 
+  Statistic 
+} from "antd";
 import axios from "axios";
 import {
   UserOutlined,
@@ -9,6 +26,7 @@ import {
   FileAddFilled,
   QuestionCircleOutlined
 } from "@ant-design/icons";
+import CountUp from 'react-countup';
 import { format } from "date-fns";
 import { ptBR } from "date-fns/locale";
 import '@ant-design/v5-patch-for-react-19';
@@ -308,6 +326,10 @@ const ClanAdminPage = () => {
     );
   }
 
+  const formatter = (value) => {
+    <CountUp end={value} separator="." />
+  }
+
   const CreateGraphsCard = () => {
     return (
       <Row gutter={[16, 16]} style={{ marginBottom: "20px" }}>
@@ -338,7 +360,7 @@ const ClanAdminPage = () => {
               borderRadius: "8px",
             }}
           >
-            <Progress type="circle" percent={100} format={() => users.length} />
+            <Statistic value={users.length} formatter={formatter}></Statistic>
           </Card>
         </Col>
         <Col span={8}>
