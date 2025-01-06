@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from "react";
-import { Layout, Badge, Dropdown, List, Button, message } from "antd";
-import { BellOutlined, CheckOutlined, CloseOutlined, RocketFilled } from "@ant-design/icons";
+import { Layout, Badge, Dropdown, List, Button, message, Divider } from "antd";
+import { BellOutlined, CheckOutlined, CloseOutlined, RightOutlined, RocketFilled } from "@ant-design/icons";
 import { NotificationRoot } from "./notification/NotificationRoot";
 import { NotificationContent } from "./notification/NotificationContent";
 import { NotificationIcon } from "./notification/NotificationIcon";
@@ -42,11 +42,11 @@ const CustomHeader = () => {
       setNotifications(response.data)
     } catch (error) {
       message.error(error.response.data.error)
-    } 
+    }
   }
 
   useEffect(
-    () => {fetchNotifications()}, 
+    () => { fetchNotifications() },
     []);
 
   const notificationMenu = (
@@ -58,12 +58,12 @@ const CustomHeader = () => {
         maxWidth: "400px",
         backgroundColor: "#1f1f1f"
       }}
-    >      
+    >
       <List
         dataSource={notifications}
         renderItem={(item) => (
           <NotificationRoot>
-            <NotificationIcon icon={RocketFilled}/>
+            <NotificationIcon icon={RocketFilled} />
             <NotificationContent title={item.title} description={item.message} />
             <NotificationActions>
               {item.callback_for_accept && <NotificationAction icon={CheckOutlined} callback_url={item.callback_for_accept} />}
@@ -73,6 +73,19 @@ const CustomHeader = () => {
         )}
         locale={{ emptyText: "Sem notificações" }}
       />
+      <Divider style={{ marginTop: "10px", marginBottom: "10px", backgroundColor: "#555" }} />
+      <Button
+        type="link"
+        style={{
+          display: "flex",
+          alignItems: "center",
+          justifyContent: "space-between",
+          width: "100%",
+          color: "#1890ff",
+        }}
+      >
+        Histórico de notificações <RightOutlined />
+      </Button>
     </div>
   );
 

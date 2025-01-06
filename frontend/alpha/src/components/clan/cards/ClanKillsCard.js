@@ -1,12 +1,13 @@
 import { Statistic } from "antd"
 import CountUp from 'react-countup';
 import CardRoot from "../../general/card/CardRoot";
+import { useEffect, useState } from "react";
 
 const ClanKillsCard = ({ kills }) => {
 
-    const formatter = (kills) => {
-        return (<CountUp end={kills} separator="." />)
-    }
+    const formatter = (value) => {
+        return <CountUp start={0} end={value} separator="." />;
+    };
 
     return (
         <CardRoot cardTitle={"Kills totais"}  cardToolTip={"Este card exibe a quantidade total de kills do seu clan."}>

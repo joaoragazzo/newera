@@ -5,8 +5,6 @@ import {
   Button,
   Tag,
   Space,
-  Row,
-  Col,
   Card,
   message,
   Modal,
@@ -30,12 +28,6 @@ import '@ant-design/v5-patch-for-react-19';
 import FormItem from "antd/es/form/FormItem";
 import EditClanButton from "../components/clan/EditClanButton";
 import InviteClanButton from "../components/clan/InviteClanButton";
-import ActiveMembersCard from "../components/clan/cards/ActiveMembersCard";
-import ClanSizeCard from "../components/clan/cards/ClanSizeCard";
-import ActivityMembersCard from "../components/clan/cards/ActivityMembersCard";
-import CardsRow from "../components/general/card/CardsRow";
-import ClanKillsCard from "../components/clan/cards/ClanKillsCard";
-import ClanDeathsCard from "../components/clan/cards/ClanDeathsCard";
 import AllCards from "../components/clan/cards/AllCards";
 
 const { Title, Paragraph } = Typography;

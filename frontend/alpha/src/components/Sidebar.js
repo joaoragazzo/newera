@@ -1,4 +1,9 @@
 import React from "react";
+import { FaCrown, FaInfo, FaChartPie } from "react-icons/fa6";
+import { FaBoxes, FaInfoCircle } from "react-icons/fa";
+import { MdDiscount } from "react-icons/md";
+import { IoIosPeople } from "react-icons/io";
+import { RiSettings3Fill } from "react-icons/ri";
 import { Layout, Menu } from "antd";
 import {
   TeamOutlined,
@@ -9,7 +14,8 @@ import {
   ShopOutlined,
   ShoppingCartOutlined,
   ShoppingFilled,
-  BugFilled
+  BugFilled,
+  StarFilled
 
 } from "@ant-design/icons";
 import { Typography } from 'antd';
@@ -23,7 +29,7 @@ const Sidebar = ({ collapsed, onCollapse }) => {
   const location = useLocation();
 
   const handleMenuClick = (item) => {
-    navigate(item.key); 
+    navigate(item.key);
   };
 
   return (
@@ -54,22 +60,31 @@ const Sidebar = ({ collapsed, onCollapse }) => {
         theme="dark"
         items={[
           {
-            key: "1", label: "Servidor", children: [
-              { key: "1-1", label: "Status do servidor" },
-              { key: "1-2", label: "Regras"},
-              { key: "1-3", label: "Equipe da administração" } 
+            key: "/admin", icon: <FaCrown />, label: "Administração", children: [
+              { key: "/admin/info", icon: <FaInfoCircle /> ,label: "Informações do servidor" },
+              { key: "/admin/statistics", icon: <FaChartPie />, label: "Estatísticas" },
+              { key: "/admin/shop", icon: <ShopOutlined />, label: "Loja" },
+              { key: "/admin/players", icon: <IoIosPeople />, label: "Jogadores" },
+              { key: "/admin/system", icon: <RiSettings3Fill />, label: "Configurações do sistema" }
             ]
           },
           {
-            key: "2", icon: <ShopOutlined />, label: "Doações", children: [
-              { key: "2-1", icon: <ShoppingFilled />, label: "Loja" },
-              { key: "2-2", icon: <ShoppingCartOutlined />, label: "Carrinho" }
+            key: "/", label: "Servidor", icon: <StarFilled /> ,children: [
+              { key: "/status", label: "Status do servidor" },
+              { key: "/rules", label: "Regras" },
+              { key: "/staff", label: "Equipe da administração" }
             ]
           },
           {
-            key: "3", icon: <FolderFilled />, label: "Inventário", children: [
-              { key: "3-1", label: "Consumíveis" },
-              { key: "3-2", label: "Itens permanentes" },
+            key: "/donate", icon: <ShopOutlined />, label: "Doações", children: [
+              { key: "/donate/store", icon: <ShoppingFilled />, label: "Loja" },
+              { key: "/donate/cart", icon: <ShoppingCartOutlined />, label: "Carrinho" }
+            ]
+          },
+          {
+            key: "/inventory", icon: <FolderFilled />, label: "Inventário", children: [
+              { key: "", label: "Consumíveis" },
+              { key: "/permanents", label: "Itens permanentes" },
               { key: "3-3", label: "Benefícios" }
             ]
           },
