@@ -1,21 +1,19 @@
 import React, { useState, useEffect } from "react";
-import { Typography, 
-  Table, 
-  Button, 
-  Tag, 
-  Space, 
-  Row, 
-  Col, 
-  Card, 
-  Progress, 
-  Tooltip, 
-  message, 
-  Modal, 
-  Form, 
-  Input, 
-  ColorPicker, 
-  Select, 
-  Statistic 
+import {
+  Typography,
+  Table,
+  Button,
+  Tag,
+  Space,
+  Row,
+  Col,
+  Card,
+  message,
+  Modal,
+  Form,
+  Input,
+  ColorPicker,
+  Select,
 } from "antd";
 import axios from "axios";
 import {
@@ -24,15 +22,21 @@ import {
   ArrowUpOutlined,
   ArrowDownOutlined,
   FileAddFilled,
-  QuestionCircleOutlined
 } from "@ant-design/icons";
-import CountUp from 'react-countup';
+
 import { format } from "date-fns";
 import { ptBR } from "date-fns/locale";
 import '@ant-design/v5-patch-for-react-19';
 import FormItem from "antd/es/form/FormItem";
 import EditClanButton from "../components/clan/EditClanButton";
 import InviteClanButton from "../components/clan/InviteClanButton";
+import ActiveMembersCard from "../components/clan/cards/ActiveMembersCard";
+import ClanSizeCard from "../components/clan/cards/ClanSizeCard";
+import ActivityMembersCard from "../components/clan/cards/ActivityMembersCard";
+import CardsRow from "../components/general/card/CardsRow";
+import ClanKillsCard from "../components/clan/cards/ClanKillsCard";
+import ClanDeathsCard from "../components/clan/cards/ClanDeathsCard";
+import AllCards from "../components/clan/cards/AllCards";
 
 const { Title, Paragraph } = Typography;
 
@@ -133,7 +137,7 @@ const ClanAdminPage = () => {
   const promoteMember = async (player_id) => {
     try {
       const response = await axios.post("/api/clan/promote/" + player_id)
-      const data = response.data 
+      const data = response.data
       message.success(data.success)
       fetchInfo()
     } catch (error) {
@@ -144,7 +148,7 @@ const ClanAdminPage = () => {
   const demoteMember = async (player_id) => {
     try {
       const response = await axios.post("/api/clan/demote/" + player_id)
-      const data = response.data 
+      const data = response.data
       message.success(data.success)
       fetchInfo()
     } catch (error) {
@@ -155,7 +159,7 @@ const ClanAdminPage = () => {
   const kickMember = async (player_id) => {
     try {
       const response = await axios.post("/api/clan/kick/" + player_id)
-      const data = response.data 
+      const data = response.data
       message.success(data.success)
       fetchInfo()
     } catch (error) {
@@ -326,63 +330,6 @@ const ClanAdminPage = () => {
     );
   }
 
-  const formatter = (value) => {
-    <CountUp end={value} separator="." />
-  }
-
-  const CreateGraphsCard = () => {
-    return (
-      <Row gutter={[16, 16]} style={{ marginBottom: "20px" }}>
-        <Col span={8}>
-          <Card
-            title={<>
-              Membros ativos
-              <Tooltip title="Este card exibe os membros que estão ativos no momento.">
-                <QuestionCircleOutlined style={{ marginLeft: "10px" }} />
-              </Tooltip>
-            </>}
-            style={{
-              borderRadius: "8px",
-            }}
-          >
-            <Progress type="circle" percent={0} />
-          </Card>
-        </Col>
-        <Col span={8}>
-          <Card
-            title={<>
-              Tamanho do clan
-              <Tooltip title="Este card exibe a quantidade de usuários no clan.">
-                <QuestionCircleOutlined style={{ marginLeft: "10px" }} />
-              </Tooltip>
-            </>}
-            style={{
-              borderRadius: "8px",
-            }}
-          >
-            <Statistic value={users.length} formatter={formatter}></Statistic>
-          </Card>
-        </Col>
-        <Col span={8}>
-          <Card
-            title={<>
-              Taxa de atividade
-              <Tooltip title="Esse card exibe a atividade do clan. A atividade é mesurada a dividindo a somatória do tempo online total do clan com o tempo total.">
-                <QuestionCircleOutlined style={{ marginLeft: "10px" }} />
-              </Tooltip>
-            </>}
-            style={{
-              borderRadius: "8px",
-              boxShadow: "0 2px 8px rgba(0, 0, 0, 0.2)",
-            }}
-          >
-            <Progress type="circle" percent={0} />
-          </Card>
-        </Col>
-      </Row>
-    );
-  }
-
   const CreateMembersListCard = () => {
     return (
       <>
@@ -484,7 +431,7 @@ const ClanAdminPage = () => {
 
   return (
     <div>
-      <CreateGraphsCard />
+      <AllCards users={users} />
 
       {!memberOfAClan ?
         <CreateClanCard />

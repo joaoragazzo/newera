@@ -13,6 +13,6 @@ public interface NotificationRepository extends JpaRepository<Notification, Inte
     @Query("SELECT n FROM Notification n WHERE n.player.id = :player_id AND n.seen_at IS NULL")
     public List<Notification> findNotSeenNotificationByPlayerId(@Param("player_id") Integer player_id);
 
-    @Query("SELECT e FROM Entity e ORDER BY e.id DESC")
-    public Notification findLastNotification();
+    // @Query("SELECT n FROM Notifiation n ORDER BY n.id DESC")
+    // public Notification findLastNotification();
 }

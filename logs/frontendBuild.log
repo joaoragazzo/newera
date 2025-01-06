@@ -18,27 +18,28 @@ go away.[0m
 Compiled with warnings.
 
 [eslint] 
-src/components/notification/NotificationRoot.js
-  Line 1:10:  'Layout' is defined but never used    no-unused-vars
-  Line 1:18:  'Badge' is defined but never used     no-unused-vars
-  Line 1:25:  'Dropdown' is defined but never used  no-unused-vars
-  Line 1:35:  'List' is defined but never used      no-unused-vars
-  Line 1:41:  'Button' is defined but never used    no-unused-vars
-
 src/pages/ClanAdminPage.js
-  Line 37:16:   'Paragraph' is assigned a value but never used                                                                                                            no-unused-vars
-  Line 120:23:  Expected '===' and instead saw '=='                                                                                                                       eqeqeq
-  Line 123:23:  Expected '===' and instead saw '=='                                                                                                                       eqeqeq
-  Line 483:6:   React Hook React.useMemo has missing dependencies: 'demoteMember', 'kickMember', and 'promoteMember'. Either include them or remove the dependency array  react-hooks/exhaustive-deps
+  Line 8:3:     'Row' is defined but never used                                                                                                                           no-unused-vars
+  Line 9:3:     'Col' is defined but never used                                                                                                                           no-unused-vars
+  Line 33:8:    'ActiveMembersCard' is defined but never used                                                                                                             no-unused-vars
+  Line 34:8:    'ClanSizeCard' is defined but never used                                                                                                                  no-unused-vars
+  Line 35:8:    'ActivityMembersCard' is defined but never used                                                                                                           no-unused-vars
+  Line 36:8:    'CardsRow' is defined but never used                                                                                                                      no-unused-vars
+  Line 37:8:    'ClanKillsCard' is defined but never used                                                                                                                 no-unused-vars
+  Line 38:8:    'ClanDeathsCard' is defined but never used                                                                                                                no-unused-vars
+  Line 41:16:   'Paragraph' is assigned a value but never used                                                                                                            no-unused-vars
+  Line 124:23:  Expected '===' and instead saw '=='                                                                                                                       eqeqeq
+  Line 127:23:  Expected '===' and instead saw '=='                                                                                                                       eqeqeq
+  Line 430:6:   React Hook React.useMemo has missing dependencies: 'demoteMember', 'kickMember', and 'promoteMember'. Either include them or remove the dependency array  react-hooks/exhaustive-deps
 
 Search for the keywords to learn more about each warning.
 To ignore, add // eslint-disable-next-line to the line before.
 
 File sizes after gzip:
 
-  408.77 kB (+5.2 kB)  build/static/js/main.8a6c156d.js
-  264 B                build/static/css/main.e6c13ad2.css
-  210 B                build/static/js/624.550f73c3.chunk.js
+  409.16 kB (+11 B)  build/static/js/main.098a0c54.js
+  347 B (+83 B)      build/static/css/main.01215176.css
+  210 B              build/static/js/624.550f73c3.chunk.js
 
 The project was built assuming it is hosted at /.
 You can control this with the homepage field in your package.json.

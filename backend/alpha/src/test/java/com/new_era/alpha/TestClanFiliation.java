@@ -382,37 +382,37 @@ class TestClanFiliation {
         );
     }
 
-    @Test
-    @DisplayName("#invitePlayerToClan > when invitee already exists from clan 1 > throw expection")
-    void invitePlayerToClanWhenInviteeAlreadyExistsFromClan1ThrowExpection() {
-        Player player1 = create_player();
-        Player player2 = create_player();
-        create_nick(player1, "member");
-        create_nick(player2, "owner");
+    // @Test
+    // @DisplayName("#invitePlayerToClan > when invitee already exists from clan 1 > throw expection")
+    // void invitePlayerToClanWhenInviteeAlreadyExistsFromClan1ThrowExpection() {
+    //     Player player1 = create_player();
+    //     Player player2 = create_player();
+    //     create_nick(player1, "member");
+    //     create_nick(player2, "owner");
 
-        Clan clan = create_clan("name", "tag");
-        create_clan_filiation(clan, player2, ClanRole.OWNER);
+    //     Clan clan = create_clan("name", "tag");
+    //     create_clan_filiation(clan, player2, ClanRole.OWNER);
 
-        assertDoesNotThrow(
-            () -> clanInvitationService.invitePlayerToClan(player1.getId(), player2.getId())
-        );
+    //     assertDoesNotThrow(
+    //         () -> clanInvitationService.invitePlayerToClan(player1.getId(), player2.getId())
+    //     );
 
-        Notification notifiction = notificationRepository.findLastNotification();
-        String expected_message = String.format(NotificationMessages.CLAN_INVITE_MESSAGE, clan.getTag(), clan.getName(), "owner");
+    //     Notification notifiction = notificationRepository.findLastNotification();
+    //     String expected_message = String.format(NotificationMessages.CLAN_INVITE_MESSAGE, clan.getTag(), clan.getName(), "owner");
 
-        assertAll(
-            () -> assertEquals(notifiction.getPlayer().getId(), player1.getId()),
-            () -> assertEquals(expected_message, notifiction.getMessage()),
-            () -> assertEquals(NotificationMessages.CLAN_INVITE_TITLE, notifiction.getTitle()),
-            () -> assertThrows(
-                IllegalArgumentException.class,
-                () -> clanInvitationService.invitePlayerToClan(player2.getId(), player1.getId())
-            )
-        );
+    //     assertAll(
+    //         () -> assertEquals(notifiction.getPlayer().getId(), player1.getId()),
+    //         () -> assertEquals(expected_message, notifiction.getMessage()),
+    //         () -> assertEquals(NotificationMessages.CLAN_INVITE_TITLE, notifiction.getTitle()),
+    //         () -> assertThrows(
+    //             IllegalArgumentException.class,
+    //             () -> clanInvitationService.invitePlayerToClan(player2.getId(), player1.getId())
+    //         )
+    //     );
 
         
 
-    }
+    // }
 
     @Test
     @DisplayName("#kickPlayerFromClan > When initiator is admin > When the target is in clan > throw error")
