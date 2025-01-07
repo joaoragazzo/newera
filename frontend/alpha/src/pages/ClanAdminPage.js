@@ -215,19 +215,21 @@ const ClanAdminPage = () => {
           onOk={onCreateOk}>
           <Form layout="vertical" id="form-clan" form={createForm} onFinish={createClan}>
             <Form.Item label="Nome do clan" name="name" rules={[
-              { required: true, message: "Você precisa escolher um nome de um clan." },
+              { required: true, message: "Você deve escolher um nome de um clan." },
               { max: 32, message: "O nome do clan deve ser no máximo 32 caracteres." }
             ]}>
               <Input></Input>
             </Form.Item>
             <FormItem label="Tag do clan" name="tag" rules={[
-              { required: true, message: "Você precisa escolher uma tag de um clan." },
+              { required: true, message: "Você deve escolher uma tag de um clan." },
               { min: 2, message: "A tag deve ter no mínimo 2 caracteres." },
               { max: 4, message: "A tag deve ter no máximo 4 caracteres." }
             ]}>
               <Input></Input>
             </FormItem>
-            <FormItem label="Selecione uma cor para representar o clan" name="color" >
+            <FormItem label="Selecione uma cor para representar o clan" name="color" rules={[
+              { required: true, message: "Você deve escolher uma cor para o clan" }
+            ]}>
               <ColorPicker onChange={(color) => {
                 const hexColor = color.toHexString();
                 createForm.setFieldValue("color", hexColor);

@@ -2,7 +2,6 @@ package com.new_era.alpha;
 
 import static org.junit.jupiter.api.Assertions.*;
 
-import java.math.BigInteger;
 import java.time.LocalDateTime;
 import java.util.List;
 import java.util.Random;
@@ -15,25 +14,13 @@ import org.junit.jupiter.params.provider.EnumSource;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 
-import com.new_era.alpha.entities.clan.Clan;
-import com.new_era.alpha.entities.clan.ClanFiliation;
-import com.new_era.alpha.entities.clan.ClanInvitation;
+import com.new_era.alpha.entities.clan.*;
 import com.new_era.alpha.entities.enums.ClanRole;
-import com.new_era.alpha.entities.player.Nick;
-import com.new_era.alpha.entities.player.Notification;
-import com.new_era.alpha.entities.player.Player;
-import com.new_era.alpha.repositories.clan.ClanFiliationRepository;
-import com.new_era.alpha.repositories.clan.ClanInvitationRepository;
-import com.new_era.alpha.repositories.clan.ClanRepository;
-import com.new_era.alpha.repositories.player.NickRepository;
-import com.new_era.alpha.repositories.player.NotificationRepository;
-import com.new_era.alpha.repositories.player.PlayerRepository;
-import com.new_era.alpha.services.clan.ClanFiliationService;
-import com.new_era.alpha.services.clan.ClanInvitationService;
-import com.new_era.alpha.services.clan.ClanManagementService;
-import com.new_era.alpha.services.clan.ClanService;
-import com.new_era.alpha.services.messages.ErrorMessages;
-import com.new_era.alpha.services.messages.NotificationMessages;
+import com.new_era.alpha.entities.player.*;
+import com.new_era.alpha.repositories.clan.*;
+import com.new_era.alpha.repositories.player.*;
+import com.new_era.alpha.services.clan.*;
+import com.new_era.alpha.services.messages.*;
 
 import jakarta.transaction.Transactional;
 

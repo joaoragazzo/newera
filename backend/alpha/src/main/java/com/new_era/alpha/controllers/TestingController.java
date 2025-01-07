@@ -1,7 +1,5 @@
 package com.new_era.alpha.controllers;
 
-import java.math.BigInteger;
-import java.time.LocalDateTime;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -17,8 +15,6 @@ import org.springframework.web.bind.annotation.RestController;
 
 import com.new_era.alpha.entities.player.Nick;
 import com.new_era.alpha.entities.player.Player;
-import com.new_era.alpha.repositories.player.NickRepository;
-import com.new_era.alpha.repositories.player.PlayerRepository;
 import com.new_era.alpha.security.UserSession;
 import com.new_era.alpha.services.player.PlayerService;
 
@@ -30,8 +26,6 @@ import lombok.AllArgsConstructor;
 public class TestingController {
 
     private final PlayerService playerService;
-    private final PlayerRepository playerRepository;
-    private final NickRepository nickRepository;
     private final UserSession session;
 
     @GetMapping("/players")
