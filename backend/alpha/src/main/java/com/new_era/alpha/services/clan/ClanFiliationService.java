@@ -11,6 +11,7 @@ import com.new_era.alpha.entities.clan.ClanFiliation;
 import com.new_era.alpha.entities.enums.ClanRole;
 import com.new_era.alpha.entities.player.Player;
 import com.new_era.alpha.repositories.clan.ClanFiliationRepository;
+import com.new_era.alpha.repositories.player.PlayerRepository;
 import com.new_era.alpha.services.dto.ClanKikedDTO;
 import com.new_era.alpha.services.enums.ClanActions;
 import com.new_era.alpha.services.messages.ErrorMessages;
@@ -24,11 +25,15 @@ import lombok.AllArgsConstructor;
 public class ClanFiliationService {
 
     private final ClanFiliationRepository clanFiliationRepository;
+    private final PlayerRepository playerRepository;
 
     private final PlayerService playerService;
     private final ClanService clanService;
     private final NotificationService notificationService;
 
+    public List<Player> unaffiliatedPlayers() {
+        return playerRepository.getUnaffiliatedPlayers();
+    }
 
     public boolean kickPlayerFromClan(Integer initiator_id, Integer target_id) {
 

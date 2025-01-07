@@ -45,6 +45,11 @@ public class ClanController {
         return clanService.getAllClans();
     }
 
+    @PostMapping("/unaffiliated")
+    public List<Player> getUnaffiliatedPlayers() {
+        return clanFiliationService.unaffiliatedPlayers();
+    }
+
     @PostMapping("/create")
     public ResponseEntity<Map<String, String>> create(@RequestBody Map<String, String> payload) {
 
