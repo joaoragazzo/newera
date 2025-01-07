@@ -45,3 +45,6 @@ cp -r /home/0x6a70/new_era/frontend/alpha/build/* /var/www/public_html/
 
 echo "[!] Reiniciando o NGINX..."
 systemctl restart nginx
+
+echo "[!] Povoando o banco de dados"
+mysql -u root -proot new_era < /home/0x6a70/new_era/debug/database.sql

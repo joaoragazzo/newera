@@ -60,35 +60,6 @@ public class TestingController {
         return new ResponseEntity<>(response, HttpStatus.OK);
     }
 
-    @GetMapping("/defaultdb")
-    public ResponseEntity<Map<String, String>> defaultdb() {
-        Map<String, String> response = new HashMap<>();
-
-        Player player;
-
-        for (long i = 0L; i < 100L; i++) {
-            player = new Player();
-            player.setSteam64id(BigInteger.valueOf(76561198118616961L + i));
-            player = playerRepository.save(player);
-
-            Nick nick = new Nick();
-            nick.setCreated_at(LocalDateTime.now().minusDays(3));
-            nick.setName(String.format("player_%d_old", i));
-            nick.setPlayer(player);
-            nickRepository.save(nick);
-
-            nick = new Nick();
-            nick.setCreated_at(LocalDateTime.now().minusDays(1));
-            nick.setName(String.format("player_%d", i));
-            nick.setPlayer(player);
-            nickRepository.save(nick);
-        }
-
-        response.put("message", "default values was successfully created");
-        return new ResponseEntity<>(response, HttpStatus.OK);
-
-    }
-
     @PostMapping("/setsteam64id")
     public ResponseEntity<String> setSteam64id(@RequestBody Map<String, String> payload) {
         Integer player_id = Integer.valueOf(payload.get("player"));

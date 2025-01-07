@@ -94,7 +94,7 @@ class TestClanFiliation {
 
 	private Player create_player() {
 		Player player = new Player();
-        BigInteger random_steam64id = BigInteger.valueOf(randomGenerator.nextInt());
+        String random_steam64id = String.valueOf(randomGenerator.nextInt());
 		player.setSteam64id(random_steam64id);
 		return playerRepository.save(player);
 	}

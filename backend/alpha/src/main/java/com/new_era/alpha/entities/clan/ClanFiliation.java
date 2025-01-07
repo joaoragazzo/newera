@@ -35,7 +35,7 @@ public class ClanFiliation {
     @Column(name = "id", nullable = false)
     private Integer id;
 
-    @OneToOne
+    @ManyToOne
     @JoinColumn(name = "player_id", nullable = false)
     @JsonIgnore
     private Player player;

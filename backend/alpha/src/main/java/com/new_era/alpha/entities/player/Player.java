@@ -31,11 +31,10 @@ public class Player {
     private Integer id;
 
     @Column(name = "steam64id", nullable = false, unique = true)
-    private BigInteger steam64id;
-
+    private String steam64id;
 
     @Column(name = "discord_id", nullable = true, unique = true)
-    private BigInteger discord_id;
+    private String discord_id;
 
     @Column(name = "karma")
     private Integer karma = 500;
