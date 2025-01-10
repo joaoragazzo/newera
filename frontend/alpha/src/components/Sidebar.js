@@ -1,7 +1,6 @@
 import React from "react";
 import { FaCrown, FaInfo, FaChartPie } from "react-icons/fa6";
 import { FaBoxes, FaInfoCircle } from "react-icons/fa";
-import { MdDiscount } from "react-icons/md";
 import { IoIosPeople } from "react-icons/io";
 import { RiSettings3Fill } from "react-icons/ri";
 import { Layout, Menu } from "antd";

@@ -6,6 +6,7 @@ import CustomHeader from "./components/Header";
 import Sidebar from "./components/Sidebar";
 import "@ant-design/v5-patch-for-react-19";
 import Debug from "./pages/Debug";
+import AdminShop from "./pages/admin/Shop";
 
 const { Content } = Layout;
 
@@ -65,6 +66,7 @@ const App = () => {
                       )
                     }
                   />
+                  <Route path="/admin/shop" element={<AdminShop />  } />
                   <Route path="/debug" element={<Debug />} />
                 </Routes>
               </React.Suspense>

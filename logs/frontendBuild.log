@@ -3,13 +3,31 @@
 > CI=false react-scripts build
 
 Creating an optimized production build...
+[0;33mOne of your dependencies, babel-preset-react-app, is importing the
+"@babel/plugin-proposal-private-property-in-object" package without
+declaring it in its dependencies. This is currently working because
+"@babel/plugin-proposal-private-property-in-object" is already in your
+node_modules folder for unrelated reasons, but it [1mmay break at any time[0;33m.
+
+babel-preset-react-app is part of the create-react-app project, [1mwhich
+is not maintianed anymore[0;33m. It is thus unlikely that this bug will
+ever be fixed. Add "@babel/plugin-proposal-private-property-in-object" to
+your devDependencies to work around this error. This will make this message
+go away.[0m
+  
 Compiled with warnings.
 
 [eslint] 
 src/components/Sidebar.js
-  Line 2:19:  'FaInfo' is defined but never used      no-unused-vars
-  Line 3:10:  'FaBoxes' is defined but never used     no-unused-vars
-  Line 4:10:  'MdDiscount' is defined but never used  no-unused-vars
+  Line 2:19:  'FaInfo' is defined but never used   no-unused-vars
+  Line 3:10:  'FaBoxes' is defined but never used  no-unused-vars
+
+src/components/admin/shop/ItemManager.js
+  Line 2:17:   'GetProp' is defined but never used                no-unused-vars
+  Line 2:26:   'UploadFile' is defined but never used             no-unused-vars
+  Line 2:38:   'UploadProps' is defined but never used            no-unused-vars
+  Line 59:23:  'setThumbnail' is assigned a value but never used  no-unused-vars
+  Line 60:12:  'searchText' is assigned a value but never used    no-unused-vars
 
 src/components/clan/cards/ClanDeathsCard.js
   Line 4:10:  'useEffect' is defined but never used  no-unused-vars
@@ -27,16 +45,30 @@ src/pages/ClanAdminPage.js
   Line 33:16:   'Paragraph' is assigned a value but never used                                                                                                            no-unused-vars
   Line 116:23:  Expected '===' and instead saw '=='                                                                                                                       eqeqeq
   Line 119:23:  Expected '===' and instead saw '=='                                                                                                                       eqeqeq
-  Line 422:6:   React Hook React.useMemo has missing dependencies: 'demoteMember', 'kickMember', and 'promoteMember'. Either include them or remove the dependency array  react-hooks/exhaustive-deps
+  Line 424:6:   React Hook React.useMemo has missing dependencies: 'demoteMember', 'kickMember', and 'promoteMember'. Either include them or remove the dependency array  react-hooks/exhaustive-deps
+
+src/pages/admin/Shop.js
+  Line 2:10:  'Button' is defined but never used        no-unused-vars
+  Line 2:24:  'Col' is defined but never used           no-unused-vars
+  Line 2:29:  'Divider' is defined but never used       no-unused-vars
+  Line 2:38:  'Row' is defined but never used           no-unused-vars
+  Line 2:51:  'Flex' is defined but never used          no-unused-vars
+  Line 3:10:  'MdDiscount' is defined but never used    no-unused-vars
+  Line 3:22:  'MdFolderCopy' is defined but never used  no-unused-vars
+  Line 3:36:  'MdAutoGraph' is defined but never used   no-unused-vars
+  Line 4:10:  'FaPercentage' is defined but never used  no-unused-vars
+  Line 4:24:  'FaBox' is defined but never used         no-unused-vars
+  Line 4:31:  'FaList' is defined but never used        no-unused-vars
+  Line 26:9:  Expected a default case                   default-case
 
 Search for the keywords to learn more about each warning.
 To ignore, add // eslint-disable-next-line to the line before.
 
 File sizes after gzip:
 
-  411.95 kB  build/static/js/main.d3bbe0af.js
-  347 B      build/static/css/main.01215176.css
-  210 B      build/static/js/624.550f73c3.chunk.js
+  452.31 kB (+38.5 kB)  build/static/js/main.c129f341.js
+  347 B                 build/static/css/main.01215176.css
+  210 B                 build/static/js/624.550f73c3.chunk.js
 
 The project was built assuming it is hosted at /.
 You can control this with the homepage field in your package.json.
