@@ -44,7 +44,6 @@ public class ClanFiliation {
     @JsonIgnore
     private Clan clan;
 
-
     @Enumerated(EnumType.STRING)
     @Column(name = "role", nullable = false)
     private ClanRole role;

@@ -22,12 +22,10 @@ src/components/Sidebar.js
   Line 2:19:  'FaInfo' is defined but never used   no-unused-vars
   Line 3:10:  'FaBoxes' is defined but never used  no-unused-vars
 
-src/components/admin/shop/ItemManager.js
-  Line 2:17:   'GetProp' is defined but never used                no-unused-vars
-  Line 2:26:   'UploadFile' is defined but never used             no-unused-vars
-  Line 2:38:   'UploadProps' is defined but never used            no-unused-vars
-  Line 59:23:  'setThumbnail' is assigned a value but never used  no-unused-vars
-  Line 60:12:  'searchText' is assigned a value but never used    no-unused-vars
+src/components/admin/shop/item/ItemManager.js
+  Line 3:26:   'DiscordFilled' is defined but never used          no-unused-vars
+  Line 22:12:  'searchText' is assigned a value but never used    no-unused-vars
+  Line 65:11:  'handleChange' is assigned a value but never used  no-unused-vars
 
 src/components/clan/cards/ClanDeathsCard.js
   Line 4:10:  'useEffect' is defined but never used  no-unused-vars
@@ -66,9 +64,9 @@ To ignore, add // eslint-disable-next-line to the line before.
 
 File sizes after gzip:
 
-  452.31 kB (+38.5 kB)  build/static/js/main.c129f341.js
-  347 B                 build/static/css/main.01215176.css
-  210 B                 build/static/js/624.550f73c3.chunk.js
+  448.38 kB (+4 B)  build/static/js/main.d10878dd.js
+  347 B             build/static/css/main.01215176.css
+  210 B             build/static/js/624.550f73c3.chunk.js
 
 The project was built assuming it is hosted at /.
 You can control this with the homepage field in your package.json.

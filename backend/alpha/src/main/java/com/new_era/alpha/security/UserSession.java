@@ -16,4 +16,5 @@ import lombok.Setter;
 @Setter
 public class UserSession {
     private Integer player_id;
+    private Boolean is_admin = true;
 }

@@ -1,116 +1,57 @@
-import React, { useRef, useState } from "react";
-import { Image, Table, Input, Button, Space, Modal, Form, Col, Row, Upload, Select, Tooltip, Cascader, InputNumber, Switch } from "antd";
-import { InboxOutlined, MinusCircleOutlined, PlusOutlined, SearchOutlined } from "@ant-design/icons";
+import React, { useEffect, useRef, useState } from "react";
+import { Image, Table, Input, Button, Space, Modal, Form, Col, Row, Upload, Select, Cascader, InputNumber, Switch, Card, Divider, message } from "antd";
+import { DeleteOutlined, DiscordFilled, EditOutlined, EyeOutlined, InboxOutlined, MinusCircleOutlined, PlusOutlined, SearchOutlined, ShoppingCartOutlined } from "@ant-design/icons";
 import { IoAddCircleOutline } from "react-icons/io5";
-import { Option } from "antd/es/mentions";
 import TextArea from "antd/es/input/TextArea";
 import PriceNameWithTooltip from "./components/PriceNameWithTooltip";
 import YoutubeNameWithTooltip from "./components/YoutubeNameWithTooltip";
+import TagsNameWithTooltip from "./components/TagsNameWithTooltop";
+import NotifySiteWithTooltip from "./components/NotifySiteNameWithTooltip";
+import AllowCommentsNameWithTooltip from "./components/AllowCommentsNameWithTooltip";
+import NotifyPrivateDiscord from "./components/NotifyPrivateDiscord";
+import NotifyPublicDiscord from "./components/NotifyPublicDiscord";
+import AllowReviewWithTooltip from "./components/AllowReviewNameWithTooltip";
+import ShowAcquisitionWithTooltip from "./components/ShowAcquisitionWithTooltip";
+import StockNumberNameWithTooltip from "./components/StockNumberNameWithTooltip";
+import axios from "axios";
 
 const ItemManager = () => {
 
-    const categories = [
-        {
-            value: "armas",
-            label: "Armas",
-            isLeaf: false, // Supercategoria é selecionável
-            children: [
-                { value: "espadas", label: "Espadas" },
-                { value: "arcos", label: "Arcos" },
-                { value: "lanças", label: "Lanças" },
-            ],
-        },
-        {
-            value: "roupas",
-            label: "Roupas",
-            isLeaf: false,
-            children: [
-                { value: "capacetes", label: "Capacetes" },
-                { value: "peitorais", label: "Peitorais" },
-                { value: "botas", label: "Botas" },
-            ],
-        },
-        {
-            value: "consumiveis",
-            label: "Consumíveis",
-            isLeaf: false,
-            children: [
-                { value: "poções", label: "Poções" },
-                { value: "alimentos", label: "Alimentos" },
-            ],
-        },
-    ];
-
-    const tags = [
-        {
-            value: "arma",
-            label: "arma"
-        },
-        {
-            value: "hitkill",
-            label: "hitkill",
-        },
-        {
-            value: "base",
-            label: "base"
-        }
-    ]
-
-
     const [isAddModalVisible, setIsAddModalVisible] = useState(false);
-    const [thumbnail, setThumbnail] = useState(null);
+    const [thumbnail, setThumbnail] = useState();
     const [searchText, setSearchText] = useState("");
     const [searchedColumn, setSearchedColumn] = useState("");
     const searchInput = useRef(null);
     const [previewOpen, setPreviewOpen] = useState(false);
     const [previewImage, setPreviewImage] = useState('');
+    const [addItemForm] = Form.useForm();
+    const [category, setCategories] = useState([]);
+
+    const fetchCategories = async () => {
+        try {
+            const response = await axios.post("/api/admin/shop/fetch/category")
+            const data = response.data
+            setCategories(data);
+        } catch (error) {
+            message.error(error.response.data.error)
+        }
+    }
+
+    useEffect(() => {
+        fetchCategories();
+    },[]);
+
+    const tags = []
 
     const getBase64 = (file) =>
         new Promise((resolve, reject) => {
-          const reader = new FileReader();
-          reader.readAsDataURL(file);
-          reader.onload = () => resolve(reader.result);
-          reader.onerror = (error) => reject(error);
+            const reader = new FileReader();
+            reader.readAsDataURL(file);
+            reader.onload = () => resolve(reader.result);
+            reader.onerror = (error) => reject(error);
         });
 
-    const [fileList, setFileList] = useState([
-        {
-            uid: '-1',
-            name: 'image.png',
-            status: 'done',
-            url: 'https://zos.alipayobjects.com/rmsportal/jkjgkEfvpUPVyRjUImniVslZfWPnJuuZ.png',
-        },
-        {
-            uid: '-2',
-            name: 'image.png',
-            status: 'done',
-            url: 'https://zos.alipayobjects.com/rmsportal/jkjgkEfvpUPVyRjUImniVslZfWPnJuuZ.png',
-        },
-        {
-            uid: '-3',
-            name: 'image.png',
-            status: 'done',
-            url: 'https://zos.alipayobjects.com/rmsportal/jkjgkEfvpUPVyRjUImniVslZfWPnJuuZ.png',
-        },
-        {
-            uid: '-4',
-            name: 'image.png',
-            status: 'done',
-            url: 'https://zos.alipayobjects.com/rmsportal/jkjgkEfvpUPVyRjUImniVslZfWPnJuuZ.png',
-        },
-        {
-            uid: '-xxx',
-            percent: 50,
-            name: 'image.png',
-            status: 'uploading',
-            url: 'https://zos.alipayobjects.com/rmsportal/jkjgkEfvpUPVyRjUImniVslZfWPnJuuZ.png',
-        },
-        {
-            uid: '-5',
-            name: 'image.png',
-            status: 'error',
-        },
-    ]);
+    const [fileList, setFileList] = useState([]);
 
     const handlePreview = async (file) => {
         if (!file.url && !file.preview) {
@@ -124,30 +65,38 @@ const ItemManager = () => {
     const handleChange = ({ fileList: newFileList }) =>
         setFileList(newFileList);
 
-   
-
     const uploadButton = (
         <button style={{ border: 0, background: 'none', color: 'white', cursor: "pointer" }} type="button">
-          <PlusOutlined />
-          <div style={{ marginTop: 8, color: 'white', cursor: "pointer" }}>Upload</div>
+            <PlusOutlined />
+            <div style={{ marginTop: 8, color: 'white', cursor: "pointer" }}>Upload</div>
         </button>
-      );
-
-    
+    );
 
     const suffixSelector = (
-        <Form.Item name="type" noStyle>
-            <Select style={{ width: 150 }} defaultValue={"unique"}>
-                <Option value="unique">por uso</Option>
-                <Option value="daily">por dia</Option>
-                <Option value="weekly">por semana</Option>
-                <Option value="month">por mês</Option>
-                <Option value="wipe">por wipe</Option>
-                <Option value="anual">por ano</Option>
-                <Option value="perma">permanente</Option>
+        <Form.Item name="type" noStyle rules={[
+            { required: true, message: "Por favor, selecione o tipo de benefício da doação" }
+        ]}>
+            <Select style={{ width: 150 }}>
+                <Select.Option value="UNIQUE">por uso</Select.Option>
+                <Select.Option value="DAILY">por dia</Select.Option>
+                <Select.Option value="WEEKLY">por semana</Select.Option>
+                <Select.Option value="MONTH">por mês</Select.Option>
+                <Select.Option value="WIPE">por wipe</Select.Option>
+                <Select.Option value="ANUAL">por ano</Select.Option>
+                <Select.Option value="PERMA">permanente</Select.Option>
             </Select>
         </Form.Item>
     );
+
+    const onOkAddFile = () => {
+        addItemForm.submit()
+    }
+
+    const onFinishAddForm = async (values) => {
+        console.log(values)
+        const response = await axios.post("/api/admin/shop/create/item", values)
+        console.log(response)
+    }
 
     const AddModal = () => {
         return (
@@ -156,23 +105,40 @@ const ItemManager = () => {
                 open={isAddModalVisible}
                 onCancel={() => { setIsAddModalVisible(false) }}
                 okText="Criar item"
-                width={800}
+                width={900}
+                onOk={onOkAddFile}
             >
-                <Form layout="vertical">
+                <Form
+                    layout="vertical"
+                    form={addItemForm}
+                    onFinish={onFinishAddForm}
+                    initialValues={{
+                        notifySite: false,
+                        notifyPublicDiscord: false,
+                        notifyPrivateDiscord: false,
+                        allowComments: false,
+                        allowRating: false,
+                        showAcquisition: false,
+                        manualDelivery: false,
+                        tags: [],
+                        type: "UNIQUE"
+                    }}
+                >
                     <Row gutter={30}>
                         <Col span={14}>
                             <Row>
-                                <Form.Item label="Nome do item" name="item_name" style={{ width: "100%" }} rules={[
-                                    { required: true, message: "Por favor, insira um nome para o item" }
+                                <Form.Item label="Nome do item" name="name" style={{ width: "100%" }} rules={[
+                                    { required: true, message: "Por favor, insira um nome para o item" },
+                                    { max: 64, message: "O nome não pode passar de 64 caracteres. " },
                                 ]}>
-                                    <Input placeholder="Nome do item" />
+                                    <Input placeholder="Nome do item" maxLength={64} showCount={true} />
                                 </Form.Item>
                             </Row>
                             <Row>
                                 <Form.Item label="Categoria" name="category" style={{ width: "100%" }} rules={[
                                     { required: true, message: "Por favor, insira a categoria para o item" }
                                 ]}>
-                                    <Cascader options={categories}
+                                    <Cascader options={category}
                                         changeOnSelect
                                         placeholder="Escolha uma categoria" />
                                 </Form.Item>
@@ -184,7 +150,6 @@ const ItemManager = () => {
                                     <InputNumber
                                         style={{ width: "100%" }}
                                         addonAfter={suffixSelector}
-                                        defaultValue={0}
                                         prefix={"R$"}
                                         formatter={(value) => `${value}`.replace(/\B(?=(\d{3})+(?!\d))/g, '.')}
                                         parser={(value) => value?.replace(/\$\s?|(\.*)/g, '')}
@@ -194,28 +159,78 @@ const ItemManager = () => {
                             </Row>
                         </Col>
                         <Col>
-                            <Form.Item label="Imagem da loja" name="thumbnail" rules={[
-                                { required: true, message: "Por favor, insira uma imagem demonstrativa do produto" }
-                            ]}>
-                                <Upload.Dragger name="files" action="/upload.do">
-                                    <p className="ant-upload-drag-icon">
-                                        <InboxOutlined />
-                                    </p>
-                                    <p className="ant-upload-text">Clique aqui ou arraste uma foto</p>
-                                    <p className="ant-upload-hint">Suporte apenas para um único upload.</p>
+                            <Form.Item
+                                label="Imagem da loja"
+                                name="thumbnail"
+                                rules={[
+                                    { required: true, message: "Por favor, insira a thumbnail" }
+                                ]}
+                            >
+                                <Upload.Dragger
+                                    name="files"
+                                    maxCount={1}
+                                    showUploadList={false}
+                                    beforeUpload={(file) => {
+                                        const reader = new FileReader();
+                                        reader.onload = (e) => {
+                                            setThumbnail(e.target.result);
+                                            addItemForm.setFieldsValue({ thumbnail: e.target.result });
+                                        };
+                                        reader.readAsDataURL(file);
+                                        return false;
+                                    }}
+                                    style={{
+                                        width: 300,
+                                        height: 300,
+                                        display: "flex",
+                                        alignItems: "center",
+                                        justifyContent: "center",
+                                    }}>
+                                    {
+                                        thumbnail ?
+                                            (
+                                                <Image
+                                                    src={thumbnail}
+                                                    alt="Thumbnail"
+                                                    style={{
+                                                        maxWidth: "100%",
+                                                        maxHeight: "100%",
+                                                        objectFit: "contain",
+                                                    }}
+                                                />
+                                            ) :
+                                            (
+                                                <>
+                                                    <p className="ant-upload-drag-icon">
+                                                        <InboxOutlined />
+                                                    </p>
+                                                    <p className="ant-upload-text">Clique aqui ou arraste uma foto</p>
+                                                    <p className="ant-upload-hint">Suporte apenas para um único upload.</p>
+                                                </>
+                                            )
+                                    }
+
                                 </Upload.Dragger>
                             </Form.Item>
                         </Col>
                     </Row>
-                    <Row>
-                        <Form.Item label={<TagsNameWithTooltip />} name="tags" style={{ width: "100%" }}>
-                            <Select
-                                mode="multiple"
-                                placeholder="Tags associadas"
-                                style={{ width: '100%' }}
-                                options={tags}
-                            />
-                        </Form.Item>
+                    <Row gutter={16}>
+                        <Col span={14}>
+                            <Form.Item label={<TagsNameWithTooltip />} name="tags" >
+                                <Select
+                                    mode="multiple"
+                                    placeholder="Tags associadas"
+                                    style={{ width: '100%' }}
+                                    options={tags}
+                                />
+                            </Form.Item>
+                        </Col>
+                        <Col span={10}>
+                            <Form.Item label={< StockNumberNameWithTooltip />} name="stock" >
+                                <InputNumber style={{ width: '100%' }} />
+                            </Form.Item>
+                        </Col>
+
                     </Row>
                     <Row>
                         <Form.Item label="Descrição" name="description" style={{ width: "100%" }} rules={[
@@ -270,39 +285,88 @@ const ItemManager = () => {
                             </Form.List>
                         </Form.Item>
                     </Row>
-                    <Row gutter={30}>
-                        <Col>
-                            <Form.Item label="Notificar jogadores do site">
-                                <Switch />
-                            </Form.Item>
+                    <Row gutter={[16, 16]}>
+                        <Col span={24}>
+                            <Card title="Notificações">
+                                <Row>
+                                    <Col span={12}>
+                                        <Form.Item name="notifySite" label={<NotifySiteWithTooltip />} >
+                                            <Switch />
+                                        </Form.Item>
+                                    </Col>
+                                    <Col span={12}>
+                                        <Form.Item name="notifyPublicDiscord" label={<NotifyPublicDiscord />} >
+                                            <Switch />
+                                        </Form.Item>
+                                    </Col>
+                                    <Col span={12}>
+                                        <Form.Item name="notifyPrivateDiscord" label={<NotifyPrivateDiscord />} >
+                                            <Switch />
+                                        </Form.Item>
+                                    </Col>
+                                </Row>
+                            </Card>
                         </Col>
-                        <Col>
-                            <Form.Item label="Notificar webhook do Discord">
-                                <Switch />
-                            </Form.Item>
+                        <Col span={24}>
+                            <Card title="Interações">
+                                <Row>
+                                    <Col span={12}>
+                                        <Form.Item name="allowComments" label={<AllowCommentsNameWithTooltip />} >
+                                            <Switch />
+                                        </Form.Item>
+                                    </Col>
+                                    <Col span={12}>
+                                        <Form.Item name="allowRating" label={< AllowReviewWithTooltip />} >
+                                            <Switch />
+                                        </Form.Item>
+                                    </Col>
+                                    <Col span={12}>
+                                        <Form.Item name="showAcquisition" label={< ShowAcquisitionWithTooltip />} >
+                                            <Switch />
+                                        </Form.Item>
+                                    </Col>
+                                </Row>
+                            </Card>
                         </Col>
-                        <Col>
-                            <Form.Item label="Permitir comentários">
-                                <Switch />
-                            </Form.Item>
-                        </Col>
-                        <Col>
-                            <Form.Item label="Permitir avaliações">
-                                <Switch />
-                            </Form.Item>
+                        <Col span={24}>
+                            <Card title="Entrega">
+                                <Row>
+                                    <Col span={12}>
+                                        <Form.Item name="manualDelivery" label="Entrega manual">
+                                            <Switch />
+                                        </Form.Item>
+                                    </Col>
+                                </Row>
+                            </Card>
                         </Col>
                     </Row>
+
                     <Row>
-                        <Form.Item label="Imagens adicionais" style={{ width: "100%" }}>
+                        <Divider />
+                        <Form.Item label="Imagens adicionais" name="images" style={{ width: "100%" }}>
                             <Upload
-                                action="/api/admin/shop/upload-image"
                                 listType="picture-card"
                                 fileList={fileList}
+                                beforeUpload={(file) => {
+                                    const reader = new FileReader();
+                                    reader.onload = (e) => {
+                                        file.thumbUrl = e.target.result;
+
+                                        const currentImages = addItemForm.getFieldValue('images') || [];
+                                        const newImages = [...currentImages, e.target.result];
+                                        addItemForm.setFieldsValue({ images: newImages });
+                                    };
+                                    reader.readAsDataURL(file);
+                                    return false;
+                                }}
+                                onChange={({ fileList: newFileList }) => {
+                                    setFileList(newFileList);
+                                }}
                                 onPreview={handlePreview}
-                                onChange={handleChange}
                             >
                                 {fileList.length >= 8 ? null : uploadButton}
                             </Upload>
+
                             {previewImage && (
                                 <Image
                                     wrapperStyle={{ display: 'none' }}
@@ -338,7 +402,7 @@ const ItemManager = () => {
             <div style={{ padding: 8 }}>
                 <Input
                     ref={searchInput}
-                    placeholder={`Pesquisar ${dataIndex}`}
+                    placeholder={`Pesquisar pelo nome`}
                     value={selectedKeys[0]}
                     onChange={(e) => setSelectedKeys(e.target.value ? [e.target.value] : [])}
                     onPressEnter={() => handleSearch(selectedKeys, confirm, dataIndex)}
@@ -420,34 +484,22 @@ const ItemManager = () => {
             key: "price",
             sorter: (a, b) => a.price - b.price,
         },
+        {
+            title: "Ação",
+            key: "action",
+            width: "0",
+            render: (_, record) => (
+                <Space>
+                    <Button type="dashed" icon={< ShoppingCartOutlined />} />
+                    <Button type="dashed" icon={< EyeOutlined />} />
+                    <Button type="dashed" icon={< EditOutlined />} />
+                    <Button type="dashed" icon={< DeleteOutlined />} />
+                </Space>
+            )
+        }
     ];
 
-    const data = [
-        {
-            key: "1",
-            item_name: "Espada de Ouro",
-            category: "Armas",
-            type: "Permanente",
-            tag: "Épico",
-            price: 500,
-        },
-        {
-            key: "2",
-            item_name: "Elmo de Ferro",
-            category: "Roupas",
-            type: "Permanente",
-            tag: "Comum",
-            price: 200,
-        },
-        {
-            key: "3",
-            item_name: "Poção de Cura",
-            category: "Consumíveis",
-            type: "Consumível",
-            tag: "Raro",
-            price: 50,
-        },
-    ];
+    const data = [];
 
     return (
         <>
