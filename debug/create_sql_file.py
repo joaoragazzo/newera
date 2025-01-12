@@ -91,3 +91,7 @@ with open('database.sql', 'w') as sql_file:
 
     if clan_filiations:
         sql_file.write(f"INSERT INTO clan_filiation (player_id, clan_id, role, joined_at) VALUES {', '.join(clan_filiations)};\n")
+
+
+    _, randomDateTime = generate_random_localdatetime()
+    sql_file.write(f"INSERT INTO category (name, created_at) VALUES (\"Armas\", \"{randomDateTime}\"), (\"Bases\", \"{randomDateTime}\"), (\"VIPs\", \"{randomDateTime}\")")

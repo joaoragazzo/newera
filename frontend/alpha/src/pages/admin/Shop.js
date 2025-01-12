@@ -3,7 +3,7 @@ import { Button, Card, Col, Divider, Row, Layout, Flex, Typography } from "antd"
 import { MdDiscount, MdFolderCopy, MdAutoGraph } from "react-icons/md";
 import { FaPercentage, FaBox, FaList } from "react-icons/fa";
 import ItemManager from "../../components/admin/shop/item/ItemManager";
-import ItemHeader from "../../components/admin/shop/ItemHeader";
+import AdminShopHeader from "../../components/admin/shop/AdminShopHeader";
 
 const { Header, Content } = Layout;
 const { Title } = Typography;
@@ -28,6 +28,8 @@ const AdminShop = () => {
                 return <ItemManager />;
             case 'category':
                 return <div>Gestão de Categorias</div>;
+            case 'tags':
+                return <div>Gestão de tags</div>
             case 'cupons':
                 return <div>Gestão de Cupons</div>;
             case 'sales':
@@ -44,7 +46,7 @@ const AdminShop = () => {
             <Card>
                 <Title style={{textAlign: "center", marginBottom: "50px"}}>CONFIGURAÇÕES DA LOJA</Title>
                 <Header style={headerStyle}>
-                    <ItemHeader setActivePage={setActivePage} activePage={activePage} />
+                    <AdminShopHeader setActivePage={setActivePage} activePage={activePage} />
                 </Header>
                 <Content style={{ marginTop: "20px", marginLeft: "50px", marginRight: "50px" }}>
                     {renderContent()}

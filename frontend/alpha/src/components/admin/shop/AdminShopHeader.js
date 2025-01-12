@@ -7,7 +7,7 @@ const buttonStyle = {
     width: '100%'
 }
 
-const ItemHeader = ({ setActivePage, activePage }) => {
+const AdminShopHeader = ({ setActivePage, activePage }) => {
     return (<><Button
         style={buttonStyle}
         icon={<FaBox />}
@@ -24,6 +24,15 @@ const ItemHeader = ({ setActivePage, activePage }) => {
             onClick={() => setActivePage('category')}
         >
             Categorias
+        </Button>
+        <Divider type="vertical" />
+        <Button
+            style={buttonStyle}
+            icon={<MdFolderCopy />}
+            type={activePage === 'tags' ? 'primary' : 'default'}
+            onClick={() => setActivePage('tags')}
+        >
+            Tags
         </Button>
         <Divider type="vertical" />
         <Button
@@ -63,4 +72,4 @@ const ItemHeader = ({ setActivePage, activePage }) => {
         </Button></>);
 }
 
-export default ItemHeader;
+export default AdminShopHeader;

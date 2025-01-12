@@ -1,18 +1,18 @@
 import React, { useEffect, useRef, useState } from "react";
 import { Image, Table, Input, Button, Space, Modal, Form, Col, Row, Upload, Select, Cascader, InputNumber, Switch, Card, Divider, message } from "antd";
-import { DeleteOutlined, DiscordFilled, EditOutlined, EyeOutlined, InboxOutlined, MinusCircleOutlined, PlusOutlined, SearchOutlined, ShoppingCartOutlined } from "@ant-design/icons";
+import { DeleteOutlined, EditOutlined, EyeOutlined, InboxOutlined, MinusCircleOutlined, PlusOutlined, SearchOutlined, ShoppingCartOutlined } from "@ant-design/icons";
 import { IoAddCircleOutline } from "react-icons/io5";
 import TextArea from "antd/es/input/TextArea";
-import PriceNameWithTooltip from "./components/PriceNameWithTooltip";
-import YoutubeNameWithTooltip from "./components/YoutubeNameWithTooltip";
-import TagsNameWithTooltip from "./components/TagsNameWithTooltop";
-import NotifySiteWithTooltip from "./components/NotifySiteNameWithTooltip";
-import AllowCommentsNameWithTooltip from "./components/AllowCommentsNameWithTooltip";
-import NotifyPrivateDiscord from "./components/NotifyPrivateDiscord";
-import NotifyPublicDiscord from "./components/NotifyPublicDiscord";
-import AllowReviewWithTooltip from "./components/AllowReviewNameWithTooltip";
-import ShowAcquisitionWithTooltip from "./components/ShowAcquisitionWithTooltip";
-import StockNumberNameWithTooltip from "./components/StockNumberNameWithTooltip";
+import PriceNameWithTooltip from "./components/tooltips/PriceNameWithTooltip";
+import YoutubeNameWithTooltip from "./components/tooltips/YoutubeNameWithTooltip";
+import TagsNameWithTooltip from "./components/tooltips/TagsNameWithTooltop";
+import NotifySiteWithTooltip from "./components/tooltips/NotifySiteNameWithTooltip";
+import AllowCommentsNameWithTooltip from "./components/tooltips/AllowCommentsNameWithTooltip";
+import NotifyPrivateDiscord from "./components/tooltips/NotifyPrivateDiscord";
+import NotifyPublicDiscord from "./components/tooltips/NotifyPublicDiscord";
+import AllowReviewWithTooltip from "./components/tooltips/AllowReviewNameWithTooltip";
+import ShowAcquisitionWithTooltip from "./components/tooltips/ShowAcquisitionWithTooltip";
+import StockNumberNameWithTooltip from "./components/tooltips/StockNumberNameWithTooltip";
 import axios from "axios";
 
 const ItemManager = () => {
@@ -93,9 +93,15 @@ const ItemManager = () => {
     }
 
     const onFinishAddForm = async (values) => {
-        console.log(values)
-        const response = await axios.post("/api/admin/shop/create/item", values)
-        console.log(response)
+        try {
+            const response = await axios.post("/api/admin/shop/create/item", values)
+            const data = response.data;
+            message.success(data.success)
+            addItemForm.resetFields()
+            setIsAddModalVisible(false)
+        } catch (error) {
+            message.error(error.response.data.error)
+        }
     }
 
     const AddModal = () => {
