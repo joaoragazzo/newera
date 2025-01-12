@@ -4,6 +4,8 @@ import { MdDiscount, MdFolderCopy, MdAutoGraph } from "react-icons/md";
 import { FaPercentage, FaBox, FaList } from "react-icons/fa";
 import ItemManager from "../../components/admin/shop/item/ItemManager";
 import AdminShopHeader from "../../components/admin/shop/AdminShopHeader";
+import CategoryManager from "../../components/admin/shop/item/CategoryManager";
+import TagManager from "../../components/admin/shop/item/TagManager";
 
 const { Header, Content } = Layout;
 const { Title } = Typography;
@@ -27,9 +29,9 @@ const AdminShop = () => {
             case 'itens':
                 return <ItemManager />;
             case 'category':
-                return <div>Gestão de Categorias</div>;
+                return <CategoryManager />;
             case 'tags':
-                return <div>Gestão de tags</div>
+                return <TagManager />
             case 'cupons':
                 return <div>Gestão de Cupons</div>;
             case 'sales':

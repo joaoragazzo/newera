@@ -1,5 +1,18 @@
-import { Cascader, Col, Form, Input, InputNumber, Modal, Row, Select, Upload } from "antd";
+import { useState, useEffect } from "react";
 
+import { Cascader, Col, Form, Input, InputNumber, Modal, Row, Select, Upload, Image, Card, Divider, message } from "antd";
+import { PlusOutlined } from "@ant-design/icons";
+import TextArea from "antd/es/input/TextArea";
+import axios from "axios";
+import StockNumberNameWithTooltip from "./tooltips/StockNumberNameWithTooltip";
+import YoutubeNameWithTooltip from "./tooltips/YoutubeNameWithTooltip";
+import TagsNameWithTooltip from "./tooltips/TagsNameWithTooltop";
+import PriceNameWithTooltip from "./tooltips/PriceNameWithTooltip";
+import ThumbnailUpload from "./AddItemModalComponents/ThumbnailUpload";
+import YoutubeLinks from "./AddItemModalComponents/YoutubeLinks";
+import NotificationSettings from "./AddItemModalComponents/NotificationSettings";
+import InterationsSettings from "./AddItemModalComponents/InteractionsSettings";
+import DeliverySettings from "./AddItemModalComponents/DeliverySettings";
 
 const suffixSelector = (
     <Form.Item name="type" noStyle rules={[
@@ -24,9 +37,63 @@ const uploadButton = (
     </button>
 );
 
-const AddModal = ( { isAddModalVisible, onOkAddFile, addItemForm, onFinishAddForm } ) => {
+const AddItemModal = ( { isAddModalVisible, setIsAddModalVisible } ) => {
     
-    const [thumbnail, setThumbnail] = useState();
+    const [previewImage, setPreviewImage] = useState('');
+    const [previewOpen, setPreviewOpen] = useState(false);
+    const [fileList, setFileList] = useState([]);
+    const [category, setCategories] = useState([]);
+    const [tags, setTags] = useState([]);
+    const [addItemForm] = Form.useForm();
+    
+
+    const fetchCategories = async () => {
+        try {
+            const response = await axios.post("/api/admin/shop/fetch/category")
+            const data = response.data
+            setCategories(data);
+        } catch (error) {
+            message.error(error.response.data.error)
+        }
+    }
+
+    useEffect(() => {
+        fetchCategories();
+    },[]);
+    
+    const onOkAddFile = () => {
+        addItemForm.submit()
+    }
+
+    const onFinishAddForm = async (values) => {
+        try {
+            const response = await axios.post("/api/admin/shop/create/item", values)
+            const data = response.data;
+            message.success(data.success)
+            addItemForm.resetFields()
+            setIsAddModalVisible(false)
+        } catch (error) {
+            message.error(error.response.data.error)
+        }
+    }
+      
+    const handlePreview = async (file) => {
+        if (!file.url && !file.preview) {
+            file.preview = await getBase64(file.originFileObj);
+        }
+
+        setPreviewImage(file.url || (file.preview));
+        setPreviewOpen(true);
+    };
+
+    const getBase64 = (file) =>
+            new Promise((resolve, reject) => {
+                const reader = new FileReader();
+                reader.readAsDataURL(file);
+                reader.onload = () => resolve(reader.result);
+                reader.onerror = (error) => reject(error);
+            });
+
 
     return (
         <Modal
@@ -73,7 +140,7 @@ const AddModal = ( { isAddModalVisible, onOkAddFile, addItemForm, onFinishAddFor
                             </Form.Item>
                         </Row>
                         <Row>
-                            <Form.Item label={<PriceNameWithTooltip />} name="price" style={{ width: "100%" }} rules={[
+                            <Form.Item label={< PriceNameWithTooltip />} name="price" style={{ width: "100%" }} rules={[
                                 { required: true, message: "Por favor, insira um preço para o item" }
                             ]}>
                                 <InputNumber
@@ -95,57 +162,13 @@ const AddModal = ( { isAddModalVisible, onOkAddFile, addItemForm, onFinishAddFor
                                 { required: true, message: "Por favor, insira a thumbnail" }
                             ]}
                         >
-                            <Upload.Dragger
-                                name="files"
-                                maxCount={1}
-                                showUploadList={false}
-                                beforeUpload={(file) => {
-                                    const reader = new FileReader();
-                                    reader.onload = (e) => {
-                                        setThumbnail(e.target.result);
-                                        addItemForm.setFieldsValue({ thumbnail: e.target.result });
-                                    };
-                                    reader.readAsDataURL(file);
-                                    return false;
-                                }}
-                                style={{
-                                    width: 300,
-                                    height: 300,
-                                    display: "flex",
-                                    alignItems: "center",
-                                    justifyContent: "center",
-                                }}>
-                                {
-                                    thumbnail ?
-                                        (
-                                            <Image
-                                                src={thumbnail}
-                                                alt="Thumbnail"
-                                                style={{
-                                                    maxWidth: "100%",
-                                                    maxHeight: "100%",
-                                                    objectFit: "contain",
-                                                }}
-                                            />
-                                        ) :
-                                        (
-                                            <>
-                                                <p className="ant-upload-drag-icon">
-                                                    <InboxOutlined />
-                                                </p>
-                                                <p className="ant-upload-text">Clique aqui ou arraste uma foto</p>
-                                                <p className="ant-upload-hint">Suporte apenas para um único upload.</p>
-                                            </>
-                                        )
-                                }
-
-                            </Upload.Dragger>
+                            <ThumbnailUpload addItemForm={addItemForm}/>
                         </Form.Item>
                     </Col>
                 </Row>
                 <Row gutter={16}>
                     <Col span={14}>
-                        <Form.Item label={<TagsNameWithTooltip />} name="tags" >
+                        <Form.Item label={< TagsNameWithTooltip />} name="tags" >
                             <Select
                                 mode="multiple"
                                 placeholder="Tags associadas"
@@ -170,102 +193,23 @@ const AddModal = ( { isAddModalVisible, onOkAddFile, addItemForm, onFinishAddFor
                 </Row>
                 <Row>
                     <Form.Item label={< YoutubeNameWithTooltip />}>
-                        <Form.List name="youtubeLinks">
-                            {(fields, { add, remove }) => (
-                                <>
-                                    <Col>
-                                        {fields.map(({ key, name, fieldKey, ...restField }) => (
-                                            <Space
-                                                key={key}
-                                                style={{ display: "flex", marginBottom: 8 }}
-                                                align="baseline"
-                                            >
-                                                <Form.Item
-                                                    {...restField}
-                                                    name={[name]}
-                                                    fieldKey={[fieldKey]}
-                                                    rules={[
-                                                        { required: true, message: "Por favor, insira o link do YouTube!" },
-                                                        { type: "url", message: "Insira um URL válido!" },
-                                                    ]}
-                                                >
-                                                    <Input placeholder="Insira o link do YouTube" />
-                                                </Form.Item>
-                                                <MinusCircleOutlined
-                                                    onClick={() => remove(name)}
-                                                    style={{ color: "red" }}
-                                                />
-                                            </Space>
-                                        ))}
-                                        <Form.Item>
-                                            <Button
-                                                type="dashed"
-                                                onClick={() => add()}
-                                                block
-                                                icon={<PlusOutlined />}
-                                            >
-                                                Adicionar outro link
-                                            </Button>
-                                        </Form.Item>
-                                    </Col>
-                                </>
-
-                            )}
-                        </Form.List>
+                        <YoutubeLinks />
                     </Form.Item>
                 </Row>
                 <Row gutter={[16, 16]}>
                     <Col span={24}>
                         <Card title="Notificações">
-                            <Row>
-                                <Col span={12}>
-                                    <Form.Item name="notifySite" label={<NotifySiteWithTooltip />} >
-                                        <Switch />
-                                    </Form.Item>
-                                </Col>
-                                <Col span={12}>
-                                    <Form.Item name="notifyPublicDiscord" label={<NotifyPublicDiscord />} >
-                                        <Switch />
-                                    </Form.Item>
-                                </Col>
-                                <Col span={12}>
-                                    <Form.Item name="notifyPrivateDiscord" label={<NotifyPrivateDiscord />} >
-                                        <Switch />
-                                    </Form.Item>
-                                </Col>
-                            </Row>
+                            <NotificationSettings />
                         </Card>
                     </Col>
                     <Col span={24}>
                         <Card title="Interações">
-                            <Row>
-                                <Col span={12}>
-                                    <Form.Item name="allowComments" label={<AllowCommentsNameWithTooltip />} >
-                                        <Switch />
-                                    </Form.Item>
-                                </Col>
-                                <Col span={12}>
-                                    <Form.Item name="allowRating" label={< AllowReviewWithTooltip />} >
-                                        <Switch />
-                                    </Form.Item>
-                                </Col>
-                                <Col span={12}>
-                                    <Form.Item name="showAcquisition" label={< ShowAcquisitionWithTooltip />} >
-                                        <Switch />
-                                    </Form.Item>
-                                </Col>
-                            </Row>
+                            <InterationsSettings />
                         </Card>
                     </Col>
                     <Col span={24}>
                         <Card title="Entrega">
-                            <Row>
-                                <Col span={12}>
-                                    <Form.Item name="manualDelivery" label="Entrega manual">
-                                        <Switch />
-                                    </Form.Item>
-                                </Col>
-                            </Row>
+                            <DeliverySettings />
                         </Card>
                     </Col>
                 </Row>
@@ -314,3 +258,5 @@ const AddModal = ( { isAddModalVisible, onOkAddFile, addItemForm, onFinishAddFor
         </Modal>
     )
 }
+
+export default AddItemModal;

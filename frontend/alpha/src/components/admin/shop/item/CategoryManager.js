@@ -1,16 +1,15 @@
-import React, { useRef, useState } from "react";
-import {  Table, Input, Button, Space } from "antd";
-import { DeleteOutlined, EditOutlined, EyeOutlined, SearchOutlined, ShoppingCartOutlined } from "@ant-design/icons";
+import { Button, Space, Input, Table } from "antd";
+import { DeleteOutlined, EditOutlined, EyeOutlined, SearchOutlined } from "@ant-design/icons";
+import { useState, useRef } from "react";
 import { IoAddCircleOutline } from "react-icons/io5";
-import AddItemModal from "./components/AddItemModal";
 
-const ItemManager = () => {
 
-    const [isAddModalVisible, setIsAddModalVisible] = useState(false);
+const CategoryManager = () => {
+    const [category, setCategory] = useState([]);
     const [searchText, setSearchText] = useState("");
-    const [searchedColumn, setSearchedColumn] = useState("");
-    const [data, setData] = useState([]);
     const searchInput = useRef(null);
+    const [searchedColumn, setSearchedColumn] = useState("");
+    const [isAddModalVisible, setIsAddModalVisible] = useState(false);
 
 
     const handleSearch = (selectedKeys, confirm, dataIndex) => {
@@ -73,43 +72,10 @@ const ItemManager = () => {
 
     const columns = [
         {
-            title: "Nome",
-            dataIndex: "item_name",
-            key: "item_name",
-            ...getColumnSearchProps("item_name"),
-        },
-        {
-            title: "Categoria",
+            title: "Nome da categoria",
             dataIndex: "category",
             key: "category",
-            filters: [
-                { text: "Armas", value: "Armas" },
-                { text: "Roupas", value: "Roupas" },
-                { text: "Consumíveis", value: "Consumíveis" },
-            ],
-            onFilter: (value, record) => record.category === value,
-        },
-        {
-            title: "Tipo",
-            dataIndex: "type",
-            key: "type",
-            filters: [
-                { text: "Permanente", value: "Permanente" },
-                { text: "Temporário", value: "Temporário" },
-                { text: "Consumível", value: "Consumível" },
-            ],
-            onFilter: (value, record) => record.type === value,
-        },
-        {
-            title: "Tag",
-            dataIndex: "tag",
-            key: "tag",
-        },
-        {
-            title: "Preço",
-            dataIndex: "price",
-            key: "price",
-            sorter: (a, b) => a.price - b.price,
+            ...getColumnSearchProps("category"),
         },
         {
             title: "Ação",
@@ -117,7 +83,6 @@ const ItemManager = () => {
             width: "0",
             render: (_, record) => (
                 <Space>
-                    <Button type="dashed" icon={< ShoppingCartOutlined />} />
                     <Button type="dashed" icon={< EyeOutlined />} />
                     <Button type="dashed" icon={< EditOutlined />} />
                     <Button type="dashed" icon={< DeleteOutlined />} />
@@ -128,13 +93,12 @@ const ItemManager = () => {
 
     return (
         <>
-            <AddItemModal isAddModalVisible={isAddModalVisible} setIsAddModalVisible={setIsAddModalVisible} />
             <div style={{ marginBottom: "20px", textAlign: "right" }}>
-                <Button icon={<IoAddCircleOutline />} size="large" onClick={() => { setIsAddModalVisible(true) }}>Adicionar novo item</Button>
+                <Button icon={<IoAddCircleOutline />} size="large" onClick={() => { setIsAddModalVisible(true) }}>Adicionar nova categoria</Button>
             </div>
-            <Table columns={columns} dataSource={data} />
+            <Table columns={columns} dataSource={category} />
         </>
     );
-};
+}
 
-export default ItemManager;
+export default CategoryManager;
